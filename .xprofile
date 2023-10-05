@@ -1,0 +1,5 @@
+setxkbmap -layout us,ru -option grp:win_space_toggle
+xset r rate 200 30
+picom -b
+"$HOME/.local/share/scripts/fehbg"
+"$HOME/.local/src/dwmblocks/dwmblocks" & 
