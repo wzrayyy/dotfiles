@@ -1,4 +1,4 @@
-export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
+export PATH="${$(find ~/.local/bin -type d -printf %p:)%%:}:$PATH"
 
 # default apps
 export EDITOR="nvim"
