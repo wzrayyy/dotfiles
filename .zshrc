@@ -25,7 +25,7 @@ PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 RPROMPT='$(gitprompt)'
 
 # ls aliases
-alias ls="ls --color=auto"
+alias ls="lsd --color=auto"
 alias la="ls -lAh"
 alias ll="ls -lh"
 
