@@ -36,6 +36,7 @@ RPROMPT='$(gitprompt)'
 
 # ls aliases
 alias ls="lsd --color=auto"
+alias l="ls -lh"
 alias la="ls -lah"
 alias ll="ls -lh"
 alias tree="ls --tree"
