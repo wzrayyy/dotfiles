@@ -1,3 +1,8 @@
+# keybinds
+source ~/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}
+#     [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
+#     [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
+
 # history
 HISTSIZE=10000000
 SAVEHIST=10000000
@@ -5,6 +10,10 @@ HISTFILE="$HOME/.cache/zsh_history"
 setopt inc_append_history
 setopt extended_history
 setopt hist_find_no_dups
+
+# enable alt+arrow movements
+bindkey "^[[1;3D" forward-word
+bindkey "^[[1;3C" backward-word
 
 # change word-style
 autoload -U select-word-style
@@ -16,6 +25,7 @@ bindkey -e
 
 # completions
 zstyle :compinstall filename '/home/wzray/.zshrc'
+zstyle ':completion:*' menu select
 autoload -Uz compinit
 compinit
 
@@ -26,13 +36,16 @@ RPROMPT='$(gitprompt)'
 
 # ls aliases
 alias ls="lsd --color=auto"
-alias la="ls -lAh"
+alias la="ls -lah"
 alias ll="ls -lh"
+alias tree="ls --tree"
 
 # aliases
 alias dt="git --git-dir=$HOME/.dotfiles/git --work-tree=$HOME"
 alias rz="exec zsh"
 alias bat="batcat"
+alias ..="cd .."
+
 
 # theming
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[red]%}["
@@ -55,3 +68,4 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}v"
 
 # plugins
 source "$HOME/.local/share/zsh-plugins/git-prompt.zsh/git-prompt.zsh"
+# source "$HOME/.local/share/zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" # don't like it, makes my terminal feel sluggish
