@@ -11,10 +11,6 @@ setopt inc_append_history
 setopt extended_history
 setopt hist_find_no_dups
 
-# enable alt+arrow movements
-bindkey "^[[1;3D" forward-word
-bindkey "^[[1;3C" backward-word
-
 # change word-style
 autoload -U select-word-style
 select-word-style b
@@ -22,6 +18,12 @@ select-word-style b
 # misc
 setopt extendedglob
 bindkey -e
+
+# enable alt+arrow movements
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;5D" backward-word
 
 # completions
 zstyle :compinstall filename '/home/wzray/.zshrc'
