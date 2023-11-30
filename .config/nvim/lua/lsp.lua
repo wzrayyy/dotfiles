@@ -1,9 +1,3 @@
--- require("utils").load_servers{ 
---     require("configs.lsp.pylsp"),
---     require("configs.lsp.clangd"),
---     require("configs.lsp.bash"),
--- }
---
 local lspconfig = require("lspconfig")
 
 local custom_attach = function(client, bufnr)
