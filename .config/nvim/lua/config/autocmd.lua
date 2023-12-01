@@ -1,25 +1,4 @@
--- Line numbers
-vim.opt.number = true
-vim.opt.relativenumber = true
-
--- Indentation
-vim.opt.expandtab = true
-vim.opt.autoindent = true
-vim.opt.smarttab = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-
--- Enable syntax highlighting
-vim.opt.termguicolors = true
-vim.opt.syntax = on
-
--- Enable undo after closing vim
-vim.opt.undofile = true
-
--- vim.g.lightline = { colorscheme = "one" }
-
--- Autostart nvim-tree
+-- Open NvimTree on startup
 local function open_nvim_tree(data)
     local real_file = vim.fn.filereadable(data.file) == 1
     local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
@@ -35,3 +14,10 @@ local function open_nvim_tree(data)
 end
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 
+-- Resotre cursor on exit
+vim.api.nvim_create_autocmd("VimLeave", {
+  pattern = "*",
+  callback = function()
+    vim.o.guicursor = "n:ver20-blinkwait700-blinkoff400-blinkon250"
+  end,
+})

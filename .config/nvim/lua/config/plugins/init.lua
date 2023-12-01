@@ -1,0 +1,5 @@
+require("config.plugins.treesitter")
+require("config.plugins.telescope")
+require("config.plugins.nvim-cmp")
+require("config.plugins.nvim-tree")
+require("config.plugins.lualine")
