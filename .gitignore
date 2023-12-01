@@ -1,0 +1,4 @@
+# lazy.nvim lockfile
+lazy-lock.json
+**/tmux/plugins/
+.zcompdump

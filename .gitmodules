@@ -1,6 +1,3 @@
-[submodule ".local/share/zsh-plugins/zsh-syntax-highlighting"]
-	path = .local/share/zsh-plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting/
-[submodule ".local/share/zsh-plugins/git-prompt.zsh"]
-	path = .local/share/zsh-plugins/git-prompt.zsh
-	url = https://github.com/woefe/git-prompt.zsh
+[submodule ".local/share/tmux-plugins/tpm"]
+	path = .local/share/tmux-plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
