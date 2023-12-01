@@ -1,5 +1,8 @@
 local map = vim.keymap.set
 
+-- Unbind used keys
+map('n', '<C-q>', '<NOP>')
+
 -- Movements between splits
 map('n', '<C-h>', '<C-w>h')
 map('n', '<C-j>', '<C-w>j')
@@ -16,14 +19,15 @@ map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Exit buffers/nvim with <leader>
 map("n", "<leader>q", function() require('utils.close_buffer').close_buffer() end)
+map("n", "<leader><C-q>", function() require('utils.close_buffer').close_buffer(true) end)
 map("n", "<leader>Q", ":%bd | quit<CR>")
-map("n", "<leader><C-Q>", ":%bd! | quit!<CR>")
 map("n", "<leader>w", ":write<CR>")
 
 -- Copy and paste from clipboard
 map("n", "<leader>y", '"+yy')
 map("v", "<leader>y", '"+y')
 map({ "n", "v" }, "<leader>p", '"+p')
+map({ "n", "v" }, "<leader>P", '"+P')
 
 -- Remap comments
 map("n", "<C-_>", require("Comment.api").toggle.linewise.current)
