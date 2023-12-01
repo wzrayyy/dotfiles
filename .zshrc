@@ -1,8 +1,5 @@
-# keybinds
-source ~/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}
-#     [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
-#     [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
-
+# ls colors
+eval "$(dircolors -b)"
 # history
 HISTSIZE=10000000
 SAVEHIST=10000000
@@ -15,21 +12,23 @@ setopt hist_find_no_dups
 autoload -U select-word-style
 select-word-style b
 
-# misc
+# options
 setopt extendedglob
-bindkey -e
+setopt AUTO_PUSHD
 
-# enable alt+arrow movements
+# keybinds
+bindkey -e
+bindkey '^[[Z' reverse-menu-complete
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;5D" backward-word
 
 # completions
-zstyle :compinstall filename '/home/wzray/.zshrc'
+autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select
-autoload -Uz compinit
-compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}:ma=48;5;8;38;5;15"
 
 # prompt
 autoload -U colors && colors
@@ -48,6 +47,7 @@ alias dt="git --git-dir=$HOME/.dotfiles/git --work-tree=$HOME"
 alias rz="exec zsh"
 alias bat="batcat"
 alias ..="cd .."
+alias ...="cd ..."
 
 
 # theming
