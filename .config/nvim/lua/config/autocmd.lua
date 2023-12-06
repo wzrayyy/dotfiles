@@ -15,9 +15,9 @@ end
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 
 -- Resotre cursor on exit
-vim.api.nvim_create_autocmd("VimLeave", {
-  pattern = "*",
-  callback = function()
-    vim.o.guicursor = "n:ver20-blinkwait700-blinkoff400-blinkon250"
-  end,
-})
+-- vim.api.nvim_create_autocmd("VimLeave", {
+--   pattern = "*",
+--   callback = function()
+--     vim.o.guicursor = "n:ver20-blinkwait700-blinkoff400-blinkon250"
+--   end,
+-- })
