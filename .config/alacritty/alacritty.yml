@@ -69,9 +69,9 @@ shell:
   args:
     - sh
     - -c
-    # - '"cd ${HOME}; exec ${SHELL}"'
     - '"cd ${HOME}; exec ${SHELL}"'
 
 key_bindings:
   - { key: 'Slash', mods: 'Control', chars: "\x1f"}
   - { key: 'Space', mods: 'Control', chars: "\x00"}
+  - { key: 'Back',  mods: 'Control', chars: "\x1b\x7f"}
