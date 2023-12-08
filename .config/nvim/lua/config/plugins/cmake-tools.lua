@@ -8,7 +8,7 @@ require("cmake-tools").setup {
   --       ${kitGenerator}
   --       ${variant:xx}
   cmake_build_directory = "cmake-build-${variant:buildType}", -- this is used to specify generate directory for cmake, allows macro expansion
-  cmake_soft_link_compile_commands = false, -- this will automatically make a soft link from compile commands file to project root dir
+  cmake_soft_link_compile_commands = true, -- this will automatically make a soft link from compile commands file to project root dir
   cmake_compile_commands_from_lsp = false, -- this will automatically set compile commands file location using lsp, to use it, please set `cmake_soft_link_compile_commands` to false
   cmake_kits_path = nil, -- this is used to specify global cmake kits path, see CMakeKits for detailed usage
   cmake_variants_message = {
@@ -56,12 +56,20 @@ require("cmake-tools").setup {
       start_insert_in_launch_task = false, -- If you want to enter terminal with :startinsert upon using :CMakeRun
       start_insert_in_other_tasks = false, -- If you want to enter terminal with :startinsert upon launching all other cmake tasks in the terminal. Generally set as false
       focus_on_main_terminal = false, -- Focus on cmake terminal when cmake task is launched. Only used if executor is terminal.
-      focus_on_launch_terminal = false, -- Focus on cmake launch terminal when executable target in launched.
+      focus_on_launch_terminal = true, -- Focus on cmake launch terminal when executable target in launched.
     },
   },
   cmake_notifications = {
-    enabled = true, -- show cmake execution progress in nvim-notify
+    enabled = false, -- show cmake execution progress in nvim-notify
     spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }, -- icons used for progress display
     refresh_rate_ms = 100, -- how often to iterate icons
   },
 }
+
+local map = vim.keymap.set
+
+-- Mappings
+map('n', '<leader>b', ':CMakeBuild<CR>')
+map('n', '<leader>c', ':CMakeClose<CR>')
+map('n', '<leader>r', ':CMakeRun<CR>')
+

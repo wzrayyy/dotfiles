@@ -9,6 +9,7 @@ return {
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'Civitasv/cmake-tools.nvim',
+  'rcarriga/nvim-notify',
   { 'numToStr/Comment.nvim', opts = {} },
   { 'akinsho/bufferline.nvim', config = {} },
   { 'ethanholz/nvim-lastplace', config = {} },
