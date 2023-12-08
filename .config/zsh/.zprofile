@@ -1,5 +1,3 @@
-# unused for now
-# export PATH="${$(find ~/.local/bin -type d -printf %p:)%%:}:$PATH"
-
-# default apps
-export EDITOR="/usr/bin/nvim"
+# if [ -z "$SSH_AUTH_SOCK" ]; then
+# 	eval "$(ssh-agent -s)"
+# fi
