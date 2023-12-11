@@ -50,13 +50,12 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}:ma=48;5;8;38;5;15"
 autoload -U colors && colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
-# command options
+# ls aliases
 alias ls="lsd --color=auto"
 alias l="ls -lh"
 alias la="ls -lah"
 alias ll="ls -lh"
 alias tree="ls --tree"
-alias tar="tar --exclude-vcs-ignores --exclude-vcs"
 
 # set bat as help pager
 alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
@@ -72,3 +71,4 @@ alias dt="git --git-dir=$HOME/.dotfiles/git --work-tree=$HOME"
 alias rz="exec zsh"
 alias reload_completion="autoload -Uz compinit && compinit"
 alias gitignore="cp ${HOME}/.local/share/gitignore-template ./.gitignore"
+alias venv="source _venv"
