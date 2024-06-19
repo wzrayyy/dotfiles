@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# supress stderr
+exec 2> /dev/null
+
+change_dpi() {
+    sed -i -E "s/Xft\.dpi: .*?/Xft\.dpi: $1/g" ~/.Xresources
+    sed -i -E "s/Xcursor\.size: .*?/Xcursor\.size: $2/g" ~/.Xresources
+
+    sed -i -E "s/gtk-cursor-theme-size=.*?/gtk-cursor-theme-size=$2/g" ~/.config/gtk-3.0/settings.ini
+
+    sed -i -E "s/gtk-cursor-theme-size=.*?/gtk-cursor-theme-size=$2/g" ~/.gtkrc-2.0
+
+    echo "Xft/DPI $(expr $1 \* 1024)" > ~/.xsettingsd
+    echo "Gtk/CursorThemeSize $2" >> ~/.xsettingsd
+
+    xrdb -merge ~/.Xresources
+    killall -HUP dwm
+    killall -HUP xsettingsd
+}
+
+EXT_MON="$(xrandr | grep -ow "\(DP-[0-9]\) connected" | cut -d " " -f 1)"
+INT_MODELINE=$(cvt 1560 1040 90 | grep "Modeline" | cut -d " " -f 2- | tr -d '"')
+INT_RES="$(echo $INT_MODELINE | cut -d ' ' -f 1 | tr -d '\"')"
+
+if [[ -z "${EXT_MON}" ]]; then
+    xrandr --delmode eDP-1 "${INT_RES}"
+    xrandr --rmmode "${INT_RES}"
+    xrandr --output eDP-1 --pos 0x0 --mode "3120x2080" --rate 90 --primary --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off
+    change_dpi 192 48
+else
+    xrandr --rmmode "${INT_RES}"
+    xrandr --newmode $(echo $INT_MODELINE)
+    xrandr --addmode eDP-1 "${INT_RES}"
+    xrandr --output eDP-1 --pos 2560x400 --mode "${INT_RES}" --output ${EXT_MON} --pos 0x0 --mode "2560x1440" --rate 144 --primary
+    change_dpi 96 24
+fi
+
+${HOME}/.config/X11/autostart

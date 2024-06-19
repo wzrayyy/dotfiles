@@ -1,0 +1,44 @@
+#!/bin/bash
+
+IFNAME="wg_swe"
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        'd'|'-d'|'--dpi') DPI="_d"
+        ;;
+        'm'|'msk') IFNAME='wg_msk'
+        ;;
+        '-v'|'--verbose') VERBOSE=1
+        ;;
+        '--visual') USE_TERMINAL=1
+        ;;
+        *) echo "Wrong argument!"; exit 1
+        ;;
+    esac
+    shift
+done
+
+if [ -z "${VERBOSE}" ]; then
+    exec &>/dev/null
+else
+    set -x
+fi
+
+UP_NAME="$(ip link show | grep 'wg' | cut -d ' ' -f 2 | sed 's/://')"
+
+sudo_a() {
+    dmenu -p "$1" <&-
+}
+
+if [ ! -z "${USE_TERMINAL}" ]; then
+    LAUNCH_CMD=(sudo -A -p "Password:")
+fi
+
+if [ -z "${UP_NAME}" ]; then
+    IFNAME="${IFNAME}${DPI}"
+    ${LAUNCH_CMD[@]} wg-quick up ${IFNAME}
+else
+    ${LAUNCH_CMD[@]} wg-quick down ${UP_NAME}
+fi
+
+pkill -36 dwmblocks

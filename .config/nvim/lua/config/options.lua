@@ -1,3 +1,4 @@
+-- Highlight search results
 vim.o.hlsearch = true
 
 -- Enable line numbers
@@ -7,8 +8,12 @@ vim.wo.relativenumber = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
--- Enable break indent
+-- Indentation
 vim.o.breakindent = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+vim.o.smartindent = false
 
 -- Save undo history
 vim.o.undofile = true

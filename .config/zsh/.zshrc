@@ -1,3 +1,5 @@
+[[ $- != *i* ]] && return
+
 # ls colors
 eval "$(dircolors -b)"
 
@@ -5,6 +7,7 @@ eval "$(dircolors -b)"
 HISTSIZE=10000000
 SAVEHIST=10000000
 HISTFILE="${HOME}/.cache/zsh_history"
+
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
@@ -29,18 +32,12 @@ bindkey "^[[1;3D" backward-word
 bindkey "^[[1;5D" backward-word
 
 
-bindkey "^[^H" backward-word
-bindkey "^[^L" forward-word
-bindkey "^[h" backward-char
-bindkey "^[f" forward-char
+bindkey "^[n" backward-word
+bindkey "^[m" forward-word
 
 # completions
 autoload -Uz compinit 
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-    compinit;
-else
-    compinit -C;
-fi;
+compinit
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -58,17 +55,43 @@ alias ll="ls -lh"
 alias tree="ls --tree"
 
 # set bat as help pager
-alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
-alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+alias -g -- --help='--help 2>&1 | batcat --language=help --style=plain'
 
 # useful cd aliases
-alias ..="cd .."
-alias ...="cd ../.."
+alias ..="cd ../"
+alias ...="cd ../../"
 alias ....="cd ../../../"
+alias .....="cd ../../../../"
+alias ......="cd ../../../../../"
+alias .......="cd ../../../../../../"
 
 # aliases
-alias dt="git --git-dir=$HOME/.dotfiles/git --work-tree=$HOME"
 alias rz="exec zsh"
-alias reload_completion="autoload -Uz compinit && compinit"
-alias gitignore="cp ${HOME}/.local/share/gitignore-template ./.gitignore"
 alias venv="source _venv"
+alias cdb="compiledb "
+alias info="pinfo "
+alias bat="batcat "
+alias img="nsxiv "
+alias xclip="xclip -selection clipboard"
+alias d="diff --color -u "
+
+# function aliases
+bl ()    { brightnessctl set $1% &> /dev/null }
+clines() { find $@ \( -name '*.cpp' -o -name '*.[ch]' \) -a ! -path '*cmake-build*' | xargs wc -l }
+nosw()   { alacritty --class 'noswallow' -e "$@" }; compdef _command nosw
+t()      { if [ -z "$1" ]; then taskell ~/.taskell.md; else taskell "$1"; fi }
+
+# git aliases
+alias gitignore="cp ${HOME}/.local/share/gitignore-template ./.gitignore"
+alias gs="git status"
+alias gc="git commit"
+alias gp="git push"
+alias gl="git log"
+alias ga="git add"
+alias gck="git checkout"
+alias gb="git branch"
+alias gd="git diff"
+alias gr="git restore"
+
+# disable xon controll chars
+stty -ixon

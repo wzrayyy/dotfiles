@@ -1,0 +1,7 @@
+#!/bin/bash
+
+PIDFILE="${XDG_RUNTIME_DIR}/mkchromecast.pid"
+
+if [ -f "${PIDFILE}" ]; then
+    printf "🔴 Casting"
+fi

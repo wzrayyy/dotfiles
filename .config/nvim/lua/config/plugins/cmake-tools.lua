@@ -2,7 +2,7 @@ require("cmake-tools").setup {
   cmake_command = "cmake", -- this is used to specify cmake command path
   cmake_regenerate_on_save = true, -- auto generate when save CMakeLists.txt
   cmake_generate_options = { "-DCMAKE_EXPORT_COMPILE_COMMANDS=1" }, -- this will be passed when invoke `CMakeGenerate`
-  cmake_build_options = {}, -- this will be passed when invoke `CMakeBuild`
+  cmake_build_options = { "-j14" }, -- this will be passed when invoke `CMakeBuild`
   -- support macro expansion:
   --       ${kit}
   --       ${kitGenerator}
@@ -60,16 +60,15 @@ require("cmake-tools").setup {
     },
   },
   cmake_notifications = {
-    enabled = false, -- show cmake execution progress in nvim-notify
+    enabled = true, -- show cmake execution progress in nvim-notify
     spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }, -- icons used for progress display
     refresh_rate_ms = 100, -- how often to iterate icons
   },
 }
 
-local map = vim.keymap.set
-
 -- Mappings
-map('n', '<leader>b', ':CMakeBuild<CR>')
-map('n', '<leader>c', ':CMakeClose<CR>')
-map('n', '<leader>r', ':CMakeRun<CR>')
+vim.keymap.set('n', '<leader>b', ':CMakeBuild<CR>')
+vim.keymap.set('n', '<leader>c', ':CMakeClose<CR>')
+vim.keymap.set('n', '<leader>r', ':CMakeRun<CR>')
+vim.keymap.set('n', '<leader>G', ':CMakeGenerate<CR>')
 

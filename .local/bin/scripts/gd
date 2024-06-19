@@ -1,8 +1,0 @@
-#!/bin/bash
-
-
-read -p "Date: " date
-export GIT_AUTHOR_DATE="${date}"
-export GIT_COMMITTER_DATE="${date}"
-
-git $@

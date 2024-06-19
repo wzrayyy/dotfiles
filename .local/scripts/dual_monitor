@@ -1,0 +1,34 @@
+#!/bin/bash
+
+MODELINE=$(cvt 4120 1440 144 | tail -1 | cut -d " " -f 2- | tr -d '"')
+RES="$(echo $MODELINE | cut -d ' ' -f 1 | tr -d '\"')"
+OUTPUT="DVI-I-1-1"
+
+create() {
+    xrandr --newmode $(echo $MODELINE)
+    xrandr --addmode ${OUTPUT} "${RES}"
+    xrandr --output ${OUTPUT} --mode "${RES}" 
+}
+
+remove() {
+    xrandr --output ${OUTPUT} --off
+    xrandr --delmode ${OUTPUT} "${RES}"
+    xrandr --rmmode "${RES}"
+}
+
+create_or_remove() {
+    if [ ! -z "$(xrandr | grep ${RES} | grep '*')" ]; then
+        remove
+    else
+        create
+    fi
+}
+
+case "$1" in
+    '-c'|'--create') create
+    ;;
+    '-d'|'--delete') remove
+    ;;
+    *) create_or_remove
+    ;;
+esac
