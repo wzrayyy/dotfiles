@@ -2,7 +2,8 @@ local map = vim.keymap.set
 
 -- Unbind keys
 map('n', '<C-q>', '<NOP>')
--- map('v', 'K', '<NOP>')
+map({ 'n', 'v' }, 'H', '<NOP>')
+map({ 'n', 'v' }, 'L', '<NOP>')
 
 -- Movement between buffers
 map({ 'n', 'v' }, '<A-u>', ':bp<CR>', { silent = true })

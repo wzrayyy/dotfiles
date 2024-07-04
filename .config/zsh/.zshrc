@@ -67,19 +67,26 @@ alias .......="cd ../../../../../../"
 
 # aliases
 alias rz="exec zsh"
-alias venv="source _venv"
+alias venv="source src_venv"
+alias ex="source src_example"
 alias cdb="compiledb "
 alias info="pinfo "
 alias bat="batcat "
 alias img="nsxiv "
 alias xclip="xclip -selection clipboard"
 alias d="diff --color -u "
+alias rgf="rg --files | rg "
+alias 7z="7zz" # for whatever reason 7z provides 7zz binary in debian
+alias wt="watch -d -cn 0.1 "
 
 # function aliases
 bl ()    { brightnessctl set $1% &> /dev/null }
 clines() { find $@ \( -name '*.cpp' -o -name '*.[ch]' \) -a ! -path '*cmake-build*' | xargs wc -l }
 nosw()   { alacritty --class 'noswallow' -e "$@" }; compdef _command nosw
-t()      { if [ -z "$1" ]; then taskell ~/.taskell.md; else taskell "$1"; fi }
+t()      { [ -z "$1" ] && taskell ~/.taskell.md || taskell "$1" }
+vims()   { vim "$(whereis $1 | cut -d ' ' -f 2)" }; compdef _command vims
+bc()     { unbuffer "$@" | bat }; compdef _command bc
+
 
 # git aliases
 alias gitignore="cp ${HOME}/.local/share/gitignore-template ./.gitignore"
@@ -92,6 +99,9 @@ alias gck="git checkout"
 alias gb="git branch"
 alias gd="git diff"
 alias gr="git restore"
+
+# docker aliases
+alias dc="docker compose"
 
 # disable xon controll chars
 stty -ixon

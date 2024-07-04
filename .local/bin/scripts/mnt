@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+[ -z "$1" ] && (echo "No arguments supplied!" ; exit 1)
+
+if [ "$(udisksctl info -b "$1" | grep -c 'MountPoints:\s\{8\}.')" -eq 0 ]; then
+    udisksctl mount -b "$1"
+else
+    udisksctl unmount -b "$1"
+fi
