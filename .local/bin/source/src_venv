@@ -1,6 +1,5 @@
-SCRIPT_PATH="$0"
-VENV_FOLDER_PATH="$(dirname ${VIRTUAL_ENV:-./})"
-VENV_FOLDER_NAME="$(basename ${VIRTUAL_ENV:-.venv})"
+VENV_FOLDER_PATH="$(dirname "${VIRTUAL_ENV:-./}")"
+VENV_FOLDER_NAME="$(basename "${VIRTUAL_ENV:-.venv}")"
 
 [ -z "${VIRTUAL_ENV}" ] && OPERATION=c || OPERATION=d
 
@@ -22,17 +21,18 @@ help() {
 
 
 remove() {
-    [ ! -z "${VIRTUAL_ENV}" ] && deactivate
+    [ -n "${VIRTUAL_ENV}" ] && deactivate
     rm -rf "${VENV_FOLDER}"
 }
 
 
 create_or_activate() {
+    # shellcheck disable=SC1091
     if [ -d "${VENV_FOLDER}" ]; then
-        source ${VENV_FOLDER}/bin/activate
+        source "${VENV_FOLDER}/bin/activate"
     else
         python3 -m venv "${VENV_FOLDER}"
-        source ${VENV_FOLDER}/bin/activate
+        source "${VENV_FOLDER}/bin/activate"
     fi
 }
 
@@ -53,10 +53,11 @@ done
 VENV_FOLDER="${VENV_FOLDER_PATH}/${VENV_FOLDER_NAME}"
 
 
+# shellcheck disable=SC2015
 case "${OPERATION}" in
-    c) [ -z "${VIRTUAL_ENV}" ]   && create_or_activate || help;;
-    d) [ ! -z "${VIRTUAL_ENV}" ] && deactivate         || help;;
-    r) [ -d "${VENV_FOLDER}" ]   && remove             || help;;
+    c) [ -z "${VIRTUAL_ENV}" ] && create_or_activate || help;;
+    d) [ -n "${VIRTUAL_ENV}" ] && deactivate         || help;;
+    r) [ -d "${VENV_FOLDER}" ] && remove             || help;;
 esac
 
 # vim: set ft=sh

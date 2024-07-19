@@ -43,13 +43,14 @@ local on_attach = function(_, bufnr)
 end
 
 local servers = {
-  ansiblels = require("config.lsp.ansiblels"),
+  ansiblels = {},
   clangd = require("config.lsp.clangd"),
-  pyright = require("config.lsp.pyright"),
+  pyright = {},
   lua_ls = require("config.lsp.lua_ls"),
-  gopls = require("config.lsp.gopls"),
-  rust_analyzer = require("config.lsp.rust_analyzer"),
-  cmake = require("config.lsp.cmake"),
+  gopls = {},
+  rust_analyzer = {},
+  cmake = {},
+  bashls = {}
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

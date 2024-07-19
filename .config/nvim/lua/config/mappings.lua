@@ -4,6 +4,7 @@ local map = vim.keymap.set
 map('n', '<C-q>', '<NOP>')
 map({ 'n', 'v' }, 'H', '<NOP>')
 map({ 'n', 'v' }, 'L', '<NOP>')
+map({ 'n', 'v' }, '<C-Space>', '<NOP>')
 
 -- Movement between buffers
 map({ 'n', 'v' }, '<A-u>', ':bp<CR>', { silent = true })
@@ -19,7 +20,7 @@ map('n', '<leader>1', function() require('utils.close_buffer').close_buffer(true
 map('n', '<leader>Q', ':%bd | quit<CR>')
 map('n', '<leader>!', ':%bd! | quit!<CR>')
 map('n', '<leader>w', ':write<CR>')
-map('n', '<leader>W', function() vim.cmd.write(vim.fn.input("File: ")) end)
+-- map('n', '<leader>W', function() vim.cmd.write(vim.fn.input("File: ")) end)
 map('n', '<leader>e', ':e<CR>')
 
 -- Duplicate leader feats to gradually move to

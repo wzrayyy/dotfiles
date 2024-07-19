@@ -30,15 +30,16 @@ sudo_a() {
     dmenu -p "$1" <&-
 }
 
-if [ ! -z "${USE_TERMINAL}" ]; then
+if [ -n "${USE_TERMINAL}" ]; then
     LAUNCH_CMD=(sudo -A -p "Password:")
 fi
 
+# shellcheck disable=SC2068
 if [ -z "${UP_NAME}" ]; then
     IFNAME="${IFNAME}${DPI}"
-    ${LAUNCH_CMD[@]} wg-quick up ${IFNAME}
+    ${LAUNCH_CMD[@]} wg-quick up "${IFNAME}"
 else
-    ${LAUNCH_CMD[@]} wg-quick down ${UP_NAME}
+    ${LAUNCH_CMD[@]} wg-quick down "${UP_NAME}"
 fi
 
 pkill -36 dwmblocks

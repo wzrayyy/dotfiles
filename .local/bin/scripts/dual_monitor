@@ -19,7 +19,7 @@ remove() {
 }
 
 create_or_remove() {
-    if [ ! -z "$(xrandr | grep ${RES} | grep '*')" ]; then
+    if xrandr --listactivemonitors | grep -q "${OUTPUT}"; then
         remove
     else
         create

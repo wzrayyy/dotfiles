@@ -84,7 +84,7 @@ bl ()    { brightnessctl set $1% &> /dev/null }
 clines() { find $@ \( -name '*.cpp' -o -name '*.[ch]' \) -a ! -path '*cmake-build*' | xargs wc -l }
 nosw()   { alacritty --class 'noswallow' -e "$@" }; compdef _command nosw
 t()      { [ -z "$1" ] && taskell ~/.taskell.md || taskell "$1" }
-vims()   { vim "$(whereis $1 | cut -d ' ' -f 2)" }; compdef _command vims
+vims()   { vim "$(whereis $1 | rev | cut -d ' ' -f 1 | rev)" }; compdef _command vims
 bc()     { unbuffer "$@" | bat }; compdef _command bc
 
 
@@ -99,6 +99,7 @@ alias gck="git checkout"
 alias gb="git branch"
 alias gd="git diff"
 alias gr="git restore"
+alias gcl="git clone"
 
 # docker aliases
 alias dc="docker compose"

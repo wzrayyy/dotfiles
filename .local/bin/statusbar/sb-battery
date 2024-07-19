@@ -1,18 +1,25 @@
 #!/bin/bash
 
-BATTERY_PATH="/sys/class/power_supply/BAT0"
-status="$(cat ${BATTERY_PATH}/status)" 
+shopt -s extglob
 
-case "${status}" in
-	"Full") status_string="⚡" ;;
-	"Discharging") status_string="🔋" ;;
-	"Charging") status_string="🔌" ;;
-	"Not charging") status_string="🛑" ;;
-	"Unknown") status_string="♻️" ;;
-	*) exit 1 ;;
-esac
+declare -a batteries
 
-capacity="$(cat ${BATTERY_PATH}/capacity)"
-[ "$status" = "Discharging" ] && [ "$capacity" -le 25 ] && status_string="❗"
+for battery_path in /sys/class/power_supply/!(AC*); do
+	status="$(cat "${battery_path}/status")" 
 
-echo "${status_string} ${capacity}%"
+	case "${status}" in
+		"Full") status_string="⚡" ;;
+		"Discharging") status_string="🔋" ;;
+		"Charging") status_string="🔌" ;;
+		"Not charging") status_string="🛑" ;;
+		"Unknown") status_string="♻️" ;;
+		*) status_string="??" ;;
+	esac
+
+	capacity="$(cat "${battery_path}/capacity")"
+	[ "$status" = "Discharging" ] && [ "$capacity" -le 25 ] && status_string="❗"
+
+	batteries+=("${status_string} ${capacity}%")
+done
+
+echo "${batteries[@]}"

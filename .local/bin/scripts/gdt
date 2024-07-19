@@ -6,7 +6,7 @@ if [ ! -d .git ]; then
 fi
 
 echo "Last commit: $(git log | grep 'Date' | cut -d ' ' -f 4- | head -1)"
-read -p "Date: " date
+read -r -p "Date: " date
 
 export GIT_AUTHOR_DATE="${date}"
 export GIT_COMMITTER_DATE="${date}"

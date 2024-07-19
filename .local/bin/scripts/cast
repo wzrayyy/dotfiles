@@ -5,29 +5,21 @@ PIDFILE="${XDG_RUNTIME_DIR}/mkchromecast.pid"
 WIDTH=1440
 HEIGHT=1080
 ASPECT_OFFSET=240
-OUTPUT_NAME='DVI-I-2-2'
-
-inhibit_pid=''
+OUTPUT_NAME='DVI-I-1-1'
 
 command() {
-    echo "ffmpeg -ac 2 -ar 44100 -frame_size 2048 -fragment_size 2048 -f pulse -ac 2 -i Mkchromecast.monitor -f x11grab -r 30 -s ${WIDTH}x${HEIGHT} -i :0.0+$1,0 -vcodec libx264 -preset veryfast -tune zerolatency -maxrate 10000k -bufsize 20000k -pix_fmt yuv420p -g 60 -f mp4 -vf scale=1280:720 -movflags frag_keyframe+empty_moov -ar 44100 -acodec libvorbis pipe:1"
+    echo "ffmpeg -ac 2 -ar 44100 -frame_size 2048 -fragment_size 2048 -f pulse -ac 2 -i Mkchromecast.monitor -f x11grab -r 30 -s ${WIDTH}x${HEIGHT} -i :0.0+$1,$2 -vcodec libx264 -preset veryfast -tune zerolatency -maxrate 10000k -bufsize 20000k -pix_fmt yuv420p -g 60 -f mp4 -vf scale=1280:720 -movflags frag_keyframe+empty_moov -ar 44100 -acodec libvorbis pipe:1"
 }
 
 set -x
 
-sigint() {
-    kill -9 ${inhibit_pid}
-}
-
-trap 'sigint' SIGINT
-
-cleanup() {
+close() {
     xrandr --output ${OUTPUT_NAME} --off
     xrandr --delmode ${OUTPUT_NAME} "1920x1080"
-    pid="$(cat ${PIDFILE})"
+    pid="$(cat "${PIDFILE}")"
     rm "${PIDFILE}"
     pkill -35 dwmblocks
-    kill -INT "${pid}"
+    pkill -P "${pid}"
 }
 
 run() {
@@ -37,18 +29,19 @@ run() {
 
     echo $$ > "${PIDFILE}"
     pkill -35 dwmblocks
-    offset=$(( "$(xrandr | grep ${OUTPUT_NAME} | cut -d ' ' -f 3 | cut -d '+' -f 2)" + ${ASPECT_OFFSET} ))
-    systemd-inhibit --what=handle-lid-switch sleep 2592000 & inhibit_pid="$!"
-    mkchromecast --video --command "$(command ${offset})"
+    h_offset=$(( "$(xrandr | grep ${OUTPUT_NAME} | cut -d ' ' -f 3 | cut -d '+' -f 2)" + "${ASPECT_OFFSET}" ))
+    v_offset="$(xrandr | grep ${OUTPUT_NAME} | cut -d ' ' -f 3 | cut -d '+' -f 3)"
+    systemd-inhibit --what=handle-lid-switch sleep 2592000 &
+    mkchromecast --video --command "$(command ${h_offset} "${v_offset}")"
 }
 
 if [ "$1" = "-k" ]; then
-    cleanup
+    close
     exit 0
 fi
 
 if [ -f "${PIDFILE}" ]; then
-    cleanup || run
+    close || run
 else
     run
 fi

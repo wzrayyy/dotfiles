@@ -6,12 +6,10 @@ exec 2> /dev/null
 change_dpi() {
     sed -i -E --follow-symlinks "s/Xft\.dpi: .*?/Xft\.dpi: $1/g" ~/.Xresources
     sed -i -E --follow-symlinks "s/Xcursor\.size: .*?/Xcursor\.size: $2/g" ~/.Xresources
-
     sed -i -E --follow-symlinks "s/gtk-cursor-theme-size=.*?/gtk-cursor-theme-size=$2/g" ~/.config/gtk-3.0/settings.ini
-
     sed -i -E --follow-symlinks "s/gtk-cursor-theme-size=.*?/gtk-cursor-theme-size=$2/g" ~/.gtkrc-2.0
 
-    echo "Xft/DPI $(expr $1 \* 1024)" > ~/.xsettingsd
+    echo "Xft/DPI $(($1 * 1024))" > ~/.xsettingsd
     echo "Gtk/CursorThemeSize $2" >> ~/.xsettingsd
 
     xrdb -merge ~/.Xresources
@@ -30,10 +28,14 @@ if [[ -z "${EXT_MON}" ]]; then
     change_dpi 192 48
 else
     xrandr --rmmode "${INT_RES}"
-    xrandr --newmode $(echo $INT_MODELINE)
+    # shellcheck disable=all
+    xrandr --newmode $(echo $INT_MODELINE) # this is a hack to make xrandr recognize the resolution
     xrandr --addmode eDP-1 "${INT_RES}"
-    xrandr --output eDP-1 --pos 2560x400 --mode "${INT_RES}" --output ${EXT_MON} --pos 0x0 --mode "2560x1440" --rate 144 --primary
+    xrandr --output eDP-1 --pos 2560x400 --mode "${INT_RES}" --output "${EXT_MON}" --pos 0x0 --mode "2560x1440" --rate 144 --primary
     change_dpi 96 24
+    xinput --map-to-output "UGTABLET 6 inch PenTablet Mouse" "${EXT_MON}"
+    xinput --map-to-output "UGTABLET 6 inch PenTablet Pen (0)" "${EXT_MON}"
+    xinput --map-to-output "UGTABLET 6 inch PenTablet Eraser (0)" "${EXT_MON}"
 fi
 
-${HOME}/.config/X11/autostart
+"${HOME}/.config/X11/autostart"
