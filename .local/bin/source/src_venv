@@ -3,7 +3,6 @@ VENV_FOLDER_NAME="$(basename "${VIRTUAL_ENV:-.venv}")"
 
 [ -z "${VIRTUAL_ENV}" ] && OPERATION=c || OPERATION=d
 
-
 help() {
     echo "USAGE:"
     echo "    venv [OPTIONS] [<VENV_FOLDER_PATH>]"
@@ -55,9 +54,9 @@ VENV_FOLDER="${VENV_FOLDER_PATH}/${VENV_FOLDER_NAME}"
 
 # shellcheck disable=SC2015
 case "${OPERATION}" in
-    c) [ -z "${VIRTUAL_ENV}" ] && create_or_activate || help;;
-    d) [ -n "${VIRTUAL_ENV}" ] && deactivate         || help;;
-    r) [ -d "${VENV_FOLDER}" ] && remove             || help;;
+    c) [ -z "${VIRTUAL_ENV}" ] && create_or_activate || help >&2;;
+    d) [ -n "${VIRTUAL_ENV}" ] && deactivate         || help >&2;;
+    r) [ -d "${VENV_FOLDER}" ] && remove             || help >&2;;
 esac
 
 # vim: set ft=sh

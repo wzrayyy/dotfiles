@@ -1,5 +1,7 @@
 [[ $- != *i* ]] && return
 
+. ~/.cargo/env
+
 # ls colors
 eval "$(dircolors -b)"
 
@@ -104,5 +106,12 @@ alias gcl="git clone"
 # docker aliases
 alias dc="docker compose"
 
+# tmux aliases
+alias tn="tmux new-session -s"
+alias ta="tmux a -t"
+
 # disable xon controll chars
 stty -ixon
+
+# print tasks on startup
+cat ~/.taskell.md

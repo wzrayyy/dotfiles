@@ -1,0 +1,6 @@
+#!/bin/bash
+
+API_ENDPOINT='http://ip-api.com/json/?fields=7876383'
+printf "%s" "$(curl "${API_ENDPOINT}" 2>/dev/null)" | jq -r '[ "IP: \(.query)", "Country: \(.country)", "City: \(.city)", "ISP: \(.isp)", "ASN: \(.as)" ][] | "\(.)"'
+
+# vim: ft=bash

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+SINK="$(pactl list sinks short | grep RUNNING | cut -d '	' -f 1)"
+pactl set-sink-mute "$SINK" false ; pactl set-sink-volume "$SINK" "$1%"

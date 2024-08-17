@@ -1,6 +1,12 @@
 #!/bin/bash
 
 IFNAME="wg_lva"
+PIPE="/var/run/vpnd.sock"
+
+vpn_sock() {
+    echo echoing "$@"
+    [ -p "$PIPE" ] && echo "$@" > $PIPE
+}
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -10,7 +16,7 @@ while [ "$#" -gt 0 ]; do
         ;;
         '-v'|'--verbose') VERBOSE=1
         ;;
-        '--visual') USE_TERMINAL=1
+        '--visual')
         ;;
         *) echo "Wrong argument!"; exit 1
         ;;
@@ -26,20 +32,18 @@ fi
 
 UP_NAME="$(ip link show | grep 'wg' | cut -d ' ' -f 2 | sed 's/://')"
 
-sudo_a() {
-    dmenu -p "$1" <&-
-}
-
-if [ -n "${USE_TERMINAL}" ]; then
-    LAUNCH_CMD=(sudo -A -p "Password:")
-fi
-
-# shellcheck disable=SC2068
-if [ -z "${UP_NAME}" ]; then
-    IFNAME="${IFNAME}${DPI}"
-    ${LAUNCH_CMD[@]} wg-quick up "${IFNAME}"
+IFNAME="${IFNAME}${DPI}"
+if [ -n "${UP_NAME}" ]; then
+    if [ "${UP_NAME}" != "${IFNAME}" ]; then
+        vpn_sock replace "${UP_NAME}" "${IFNAME}"
+    else
+        vpn_sock down "${UP_NAME}"
+    fi
 else
-    ${LAUNCH_CMD[@]} wg-quick down "${UP_NAME}"
+    vpn_sock up "${IFNAME}"
 fi
 
+read -r < "$PIPE"
 pkill -36 dwmblocks
+
+# vim: ft=bash

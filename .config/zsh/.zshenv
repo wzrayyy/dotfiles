@@ -1,5 +1,6 @@
 set -a
 
+PATH="$HOME/.local/share/go/bin:$PATH"
 PATH="${$(find -L ~/.local/bin -type d -printf %p:)%%:}:$PATH"
 
 # lc vars

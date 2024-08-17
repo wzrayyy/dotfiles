@@ -14,6 +14,6 @@ return {
   { 'akinsho/bufferline.nvim', config = {} },
   { 'ethanholz/nvim-lastplace', config = {} },
   { 'numToStr/Comment.nvim', opts = {} },
-  -- { 'wakatime/vim-wakatime', event = 'VeryLazy' },
+  { 'wakatime/vim-wakatime', event = 'VeryLazy' },
   { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, opts = { }, }
 }

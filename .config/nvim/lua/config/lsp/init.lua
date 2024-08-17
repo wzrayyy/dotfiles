@@ -50,7 +50,8 @@ local servers = {
   gopls = {},
   rust_analyzer = {},
   cmake = {},
-  bashls = {}
+  bashls = {},
+  hls = {}
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
