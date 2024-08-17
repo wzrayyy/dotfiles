@@ -15,13 +15,13 @@ map({ 'n', 'v' }, 'k', 'v:count == 0 ? "gk" : "k"', { expr = true, silent = true
 map({ 'n', 'v' }, 'j', 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
 
 -- Exit buffers/nvim with <leader>
-map('n', '<leader>q', function() require('utils.close_buffer').close_buffer() end)
-map('n', '<leader>1', function() require('utils.close_buffer').close_buffer(true) end)
-map('n', '<leader>Q', ':%bd | quit<CR>')
-map('n', '<leader>!', ':%bd! | quit!<CR>')
-map('n', '<leader>w', ':write<CR>')
--- map('n', '<leader>W', function() vim.cmd.write(vim.fn.input("File: ")) end)
-map('n', '<leader>e', ':e<CR>')
+-- map('n', '<leader>q', function() require('utils.close_buffer').close_buffer() end)
+-- map('n', '<leader>1', function() require('utils.close_buffer').close_buffer(true) end)
+-- map('n', '<leader>Q', ':%bd | quit<CR>')
+-- map('n', '<leader>!', ':%bd! | quit!<CR>')
+-- map('n', '<leader>w', ':write<CR>')
+-- -- map('n', '<leader>W', function() vim.cmd.write(vim.fn.input("File: ")) end)
+-- map('n', '<leader>e', ':e<CR>')
 
 -- Duplicate leader feats to gradually move to
 map('n', '<C-q>', function() require('utils.close_buffer').close_buffer() end)

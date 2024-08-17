@@ -11,6 +11,7 @@ return {
   'tpope/vim-rhubarb',
   'tpope/vim-sleuth',
   'tpope/vim-surround',
+  'nvim-treesitter/nvim-treesitter-context',
   { 'akinsho/bufferline.nvim', config = {} },
   { 'ethanholz/nvim-lastplace', config = {} },
   { 'numToStr/Comment.nvim', opts = {} },
