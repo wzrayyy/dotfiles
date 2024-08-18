@@ -49,6 +49,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}:ma=48;5;8;38;5;15"
 autoload -U colors && colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
+
 # ls aliases
 alias ls="lsd --color=auto"
 alias l="ls -lh"
@@ -82,12 +83,11 @@ alias 7z="7zz" # for whatever reason 7z provides 7zz binary in debian
 alias wt="watch -d -cn 0.1 "
 
 # function aliases
-bl ()    { brightnessctl set $1% &> /dev/null }
-clines() { find $@ \( -name '*.cpp' -o -name '*.[ch]' \) -a ! -path '*cmake-build*' | xargs wc -l }
-nosw()   { alacritty --class 'noswallow' -e "$@" }; compdef _command nosw
-t()      { [ -z "$1" ] && taskell ~/.taskell.md || taskell "$1" }
-vims()   { vim "$(whereis $1 | rev | cut -d ' ' -f 1 | rev)" }; compdef _command vims
-bc()     { unbuffer "$@" | bat }; compdef _command bc
+bl()     { brightnessctl set "$1"% &> /dev/null; }
+nosw()   { alacritty --class 'noswallow' -e "$@"; }; compdef _command nosw
+t()      { taskell "${1:-${HOME}/.taskell.md}"; }
+vims()   { vim "$(whereis "$1" | rev | cut -d ' ' -f 1 | rev)"; }; compdef _command vims
+bc()     { unbuffer "$@" | bat; }; compdef _command bc
 
 
 # git aliases
@@ -107,7 +107,11 @@ alias gcl="git clone"
 alias dc="docker compose"
 
 # tmux aliases
-alias tn="tmux new-session -s"
+tn() {
+	tmux new-session -s "${1-"$(basename "$(pwd)")"}"
+}
+
+
 alias ta="tmux a -t"
 
 # disable xon controll chars
