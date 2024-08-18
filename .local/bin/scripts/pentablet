@@ -1,6 +1,0 @@
-#!/bin/bash
-
-OUTPUT="${1:-"DP-1"}"
-xinput --map-to-output "UGTABLET 6 inch PenTablet Mouse" "${OUTPUT}"
-xinput --map-to-output "UGTABLET 6 inch PenTablet Pen (0)" "${OUTPUT}"
-xinput --map-to-output "UGTABLET 6 inch PenTablet Eraser (0)" "${OUTPUT}"

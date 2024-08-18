@@ -1,12 +1,6 @@
 #!/bin/bash
 
 IFNAME="wg_lva"
-PIPE="/var/run/vpnd.sock"
-
-vpn_sock() {
-    echo echoing "$@"
-    [ -p "$PIPE" ] && echo "$@" > $PIPE
-}
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -15,8 +9,6 @@ while [ "$#" -gt 0 ]; do
         'm'|'msk') IFNAME='wg_msk'
         ;;
         '-v'|'--verbose') VERBOSE=1
-        ;;
-        '--visual')
         ;;
         *) echo "Wrong argument!"; exit 1
         ;;
@@ -35,15 +27,15 @@ UP_NAME="$(ip link show | grep 'wg' | cut -d ' ' -f 2 | sed 's/://')"
 IFNAME="${IFNAME}${DPI}"
 if [ -n "${UP_NAME}" ]; then
     if [ "${UP_NAME}" != "${IFNAME}" ]; then
-        vpn_sock replace "${UP_NAME}" "${IFNAME}"
+        wg-quick down "${UP_NAME}"
+        wg-quick up "${IFNAME}"
     else
-        vpn_sock down "${UP_NAME}"
+        wg-quick down "${UP_NAME}"
     fi
 else
-    vpn_sock up "${IFNAME}"
+    wg-quick up "${IFNAME}"
 fi
 
-read -r < "$PIPE"
 pkill -36 dwmblocks
 
 # vim: ft=bash

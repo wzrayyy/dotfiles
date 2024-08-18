@@ -1,0 +1,49 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+
+PIPE="/var/run/vpnd.sock"
+
+[ -p $PIPE ] && exit 1
+[ "$(id -u)" != "0" ] && exit 1
+
+trap 'die' SIGTERM SIGQUIT SIGINT
+
+declare -a CONFIGS
+for config in /etc/wireguard/*; do
+	config="$(basename "$config")"
+	CONFIGS+=("${config%.conf}")
+done
+
+COMMANDS=("up" "down")
+
+die() {
+	rm $PIPE
+	exit 0
+}
+
+in_arr() {
+	declare -n arr="$2"
+
+	for value in "${arr[@]}"; do
+		[ "$value" = "$1" ] && return 0
+	done
+	return 1
+}
+
+main() {
+	mkfifo $PIPE -m666
+
+	while :; do
+		read -r cmd ifname < $PIPE
+
+		if ! in_arr "$ifname" "CONFIGS"; then
+			echo "ERROR: Invalid interface $ifname" > $PIPE
+		elif ! in_arr "$cmd" "COMMANDS"; then
+			echo "ERROR: Invalid command $cmd" > $PIPE
+		else
+			wg-quick "$cmd" "$ifname" > $PIPE 2>&1
+		fi
+	done
+}
+
+main

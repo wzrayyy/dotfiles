@@ -1,14 +1,53 @@
 #!/bin/bash
 
-if [ ! -d .git ]; then
+if [ ! -d "./.git" ]; then
     echo "missing .git dir!"
     exit 1
 fi
 
-echo "Last commit: $(git log | grep 'Date' | cut -d ' ' -f 4- | head -1)"
-read -r -p "Date: " date
+last_commit() {
+    printf "Last commit date: %s\n" "$(git log | grep 'Date' | cut -d ' ' -f 4- | head -1)"
+}
+
+help() {
+    echo "gdt: Commit with fake date"
+    echo
+    echo "USAGE"
+    echo "    $0 -[dl] <git command>"
+    echo
+    echo "ARGS"
+    echo "    -d, --date    Sets commit and author date"
+    echo "    -h, --help    Prints this message"
+}
+
+die() {
+    echo "ERROR: $1"
+    echo
+    help >&2
+    exit 1
+}
+
+case "$1" in
+    "-d"|"--date")
+        shift
+        [ -n "$1" ] && date="$1" || die "Missing date"
+        shift
+    ;;
+    "-h"|"--help")
+        help
+        exit
+    ;;
+    *)
+        last_commit
+        exit
+    ;;
+esac
+
+if [ "$#" -lt "1" ]; then
+    die "Missing commit message!"
+fi
 
 export GIT_AUTHOR_DATE="${date}"
 export GIT_COMMITTER_DATE="${date}"
 
-git "$@"
+git commit -am "$@"
