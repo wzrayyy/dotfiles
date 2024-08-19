@@ -28,11 +28,11 @@ setopt auto_pushd
 # keybinds
 bindkey -e
 bindkey '^[[Z' reverse-menu-complete
+
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;5D" backward-word
-
 
 bindkey "^[n" backward-word
 bindkey "^[m" forward-word
@@ -56,6 +56,7 @@ alias l="ls -lh"
 alias la="ls -lah"
 alias ll="ls -lh"
 alias tree="ls --tree"
+alias lt="l -t"
 
 # set bat as help pager
 alias -g -- --help='--help 2>&1 | batcat --language=help --style=plain'

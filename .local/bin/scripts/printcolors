@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -n "$1" ]; then
+    cols=6
+    offset=-15
+    colors=({16..255})
+else
+    cols=8
+    offset=1
+    colors=({0..15})
+fi
+
+for i in "${colors[@]}"; do
+    printf '\x1b[38;5;%dmcolor%03d\x1b[0m' "$i" "$i"
+    [ $(((i + offset) % cols)) -eq 0 ] && printf "\n" || printf " "
+done

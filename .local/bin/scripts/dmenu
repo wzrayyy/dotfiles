@@ -1,2 +1,2 @@
-exec /usr/bin/dmenu -fn 'Mononoki Nerd Font Propo:size=12' -nb '#3a3a3a' -nf '#bbbbbb' -sb '#db8402' -sf '#eeeeee' "$@"
+exec /usr/bin/dmenu -fn 'Mononoki Nerd Font Propo:size=12' -nb '#232323' -sb '#3a3a3a' -nf '#a0a0a0' -sf '#ffffff' "$@"
 # vim: ft=sh

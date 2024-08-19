@@ -1,0 +1,19 @@
+#!/bin/bash
+
+declare -A cases
+
+while read -r element; do
+	case "$element" in
+		"#Open"*)
+			cases["open"]+=$element
+		;;
+		"#Mark as read"*)
+			cases["read"]+=$element
+		;;
+		*) cases["$element"]="$element"
+	esac
+done
+
+
+sel="$(for el in "${!cases[@]}"; do echo "$el"; done | dmenu -p 'dunst:')"
+[ -n "${sel}" ] && echo "${cases["$sel"]}"
