@@ -1,5 +1,7 @@
 [[ $- != *i* ]] && return
 
+[ "$TERM" = "linux" ] && export TERM=fbterm
+
 . ~/.cargo/env
 
 # ls colors
@@ -95,6 +97,7 @@ bc()     { unbuffer "$@" | bat; }; compdef _command bc
 alias gitignore="cp ${HOME}/.local/share/gitignore-template ./.gitignore"
 alias gs="git status"
 alias gc="git commit"
+alias gca="git commit --amend --no-edit"
 alias gp="git push"
 alias gl="git log"
 alias ga="git add"
@@ -106,6 +109,8 @@ alias gcl="git clone"
 
 # docker aliases
 alias dc="docker compose"
+alias docker!="DOCKER_HOST=ssh://docker /usr/bin/docker"
+alias dc!="docker! compose"
 
 # tmux aliases
 tn() {

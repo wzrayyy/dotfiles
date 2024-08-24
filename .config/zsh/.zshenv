@@ -33,5 +33,6 @@ XDG_SESSION_DESKTOP="$XDG_CURRENT_DESKTOP"
 WINDOW_MANAGER="dwm"
 
 SUDO_ASKPASS="${HOME}/.local/bin/scripts/dmenu_askpass"
+SSH_ASKPASS="${HOME}/.local/bin/scripts/ssh-askpass"
 
 set +a
