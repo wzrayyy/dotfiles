@@ -1,0 +1,41 @@
+#!/bin/bash
+
+: "${1:?Missing filename!}"
+
+FILENAME="$(mktemp)"
+
+cleanup() {
+    rm -f "$FILENAME"
+}
+
+trap 'cleanup' INT HUP TRAP
+
+shift_header() {
+    read -r line < "$1"
+
+    if [[ "$line" = "# "* ]]; then
+        echo "---"
+        echo "title: ${line#"# "}"
+        echo "---"
+        tail -n +2 "$1"
+    else
+        cat "$1"
+    fi
+}
+
+main() {
+    local -a pandoc_options=(
+	'--from=gfm+tex_math_dollars+footnotes+emoji-autolink_bare_uris'
+	'--to=html+raw_html'
+	'--mathjax'
+	"--template=${HOME}/.local/share/default.html"
+	"--variable=published_time=$(date -Iseconds -d"$(stat "$1" | grep 'Birth:' | sed 's/.*Birth:\s//')")"
+    )
+    pandoc "${pandoc_options[@]}" <(shift_header "$1") > "$FILENAME" 2>/dev/null &&
+    firefox "$FILENAME" 2>/dev/null & disown
+
+    sleep 5
+    cleanup
+}
+
+main "$@"

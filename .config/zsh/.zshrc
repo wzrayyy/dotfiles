@@ -106,6 +106,7 @@ alias gb="git branch"
 alias gd="git diff"
 alias gr="git restore"
 alias gcl="git clone"
+alias gds="gd --staged"
 
 # docker aliases
 alias dc="docker compose"

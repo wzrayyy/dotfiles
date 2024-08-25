@@ -1,16 +1,35 @@
 #!/bin/bash
 
-if [ -n "$1" ]; then
-    cols=6
-    offset=-15
-    colors=({16..255})
-else
-    cols=8
-    offset=1
-    colors=({0..15})
-fi
+printc() {
+    printf '\e[48;5;%dm    %s\e[0m' "$1" "$2"
+}
 
-for i in "${colors[@]}"; do
-    printf '\x1b[38;5;%dmcolor%03d\x1b[0m' "$i" "$i"
-    [ $(((i + offset) % cols)) -eq 0 ] && printf "\n" || printf " "
+for i in {0..1}; do
+    for _ in {0..1}; do
+        for ((j=8*i;j<8*(i+1);++j)); do
+            printc "$j" "   "
+        done
+        echo
+    done
+done
+
+echo
+
+for i in {0..5}; do
+    for _ in {0..1}; do
+        for ((j=36*i+16;j<36*(i+1)+16;++j)); do
+            printc "$j"
+            [ $(((j + -15) % 6)) -eq 0 ] && printf " " || printf ""
+        done
+        echo
+    done
+done
+
+echo
+
+for _ in {0..1}; do
+    for i in {232..255}; do
+        printc "$i" "  "
+    done
+    echo
 done
