@@ -6,9 +6,6 @@ map({ 'n', 'v' }, 'H', '<NOP>')
 map({ 'n', 'v' }, 'L', '<NOP>')
 map({ 'n', 'v' }, '<C-Space>', '<NOP>')
 
--- Yes...
-map({ 'n', 'v' }, 'q:', ':q')
-
 -- Movement between buffers
 map({ 'n', 'v' }, '<A-u>', ':bp<CR>', { silent = true })
 map({ 'n', 'v' }, '<A-i>', ':bn<CR>', { silent = true })
@@ -21,8 +18,7 @@ map({ 'n', 'v' }, 'j', 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true
 map('n', '<C-q>', function() require('utils.close_buffer').close_buffer() end)
 
 -- Copy and paste from clipboard
-map('n', '<leader>y', '"+yy<ESC>')
-map('v', '<leader>y', '"+y<ESC>')
+map({ 'n', 'v' }, '<leader>y', '"+y')
 map({ 'n', 'v' }, '<leader>p', '"+p<ESC>')
 map({ 'n', 'v' }, '<leader>P', '"+P<ESC>')
 
@@ -34,8 +30,6 @@ map({ 'n', 'v' }, '<leader>M', '<C-w>6+')
 
 -- Remap <M-BS> to remove last word
 map('i', '<M-BS>', '<C-w>')
-
-map('n', '<leader>F', function() vim.lsp.buf.format() end)
 
 map('n', '<C-M-k>', ':m-2<CR>', { silent = true })
 map('n', '<C-M-j>', ':m+1<CR>', { silent = true })

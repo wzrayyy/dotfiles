@@ -12,4 +12,4 @@ require("lazy").setup("plugins", {
         notify = false,
     },
 })
-require("config.lsp")
+require("lsp")
