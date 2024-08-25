@@ -18,6 +18,11 @@ return {
                 open_file = {
                     quit_on_open = true,
                 },
+                change_dir = {
+                    enable = true,
+                    global = true,
+                    restrict_above_cwd = false,
+                }
             },
         })
 
