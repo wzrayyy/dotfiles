@@ -1,3 +1,0 @@
-return {
-  autoformat = true,
-}

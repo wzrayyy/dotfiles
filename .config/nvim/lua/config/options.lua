@@ -9,12 +9,14 @@ vim.wo.relativenumber = true
 vim.o.mouse = 'a'
 
 -- Indentation
-vim.o.breakindent = true
-vim.o.tabstop = 4
+vim.o.tabstop = 8
+vim.o.expandtab = true
 vim.o.shiftwidth = 4
-vim.o.softtabstop = 0
-vim.o.expandtab = false
+vim.o.autoindent = true
 vim.o.smartindent = true
+vim.o.smarttab = true
+vim.o.breakindent = true
+vim.o.softtabstop = -1
 
 -- Save undo history
 vim.o.undofile = true
@@ -29,9 +31,6 @@ vim.wo.signcolumn = 'yes'
 -- Decrease update time
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
 
 -- Enable TrueColor
 vim.o.termguicolors = true

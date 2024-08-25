@@ -4,16 +4,12 @@ vim.g.maplocalleader = ' '
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Load modules
-if vim.g.vscode then
-  require("config.mappings")
-else
-  require("utils.lazy").lazy_init()
-  require("lazy").setup("plugins", {
+require("config")
+require("utils.lazy").lazy_init()
+require("lazy").setup("plugins", {
     change_detection = {
-      enabled = false,
-      notify = false,
+        enabled = false,
+        notify = false,
     },
-  })
-
-  require("config")
-end
+})
+require("config.lsp")

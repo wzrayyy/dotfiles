@@ -1,20 +1,24 @@
 return {
-  'Civitasv/cmake-tools.nvim',
-  'averms/black-nvim',
-  'numToStr/Navigator.nvim',
-  'nvim-lualine/lualine.nvim',
-  'nvim-tree/nvim-tree.lua',
-  'nvim-tree/nvim-web-devicons',
-  'rcarriga/nvim-notify',
-  'tmux-plugins/vim-tmux',
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
-  'tpope/vim-sleuth',
-  'tpope/vim-surround',
-  'nvim-treesitter/nvim-treesitter-context',
-  { 'akinsho/bufferline.nvim', config = {} },
-  { 'ethanholz/nvim-lastplace', config = {} },
-  { 'numToStr/Comment.nvim', opts = {} },
-  { 'wakatime/vim-wakatime', event = 'VeryLazy' },
-  { "folke/trouble.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, opts = { }, }
+    'rcarriga/nvim-notify',
+    { 'kylechui/nvim-surround', version = '*', event = 'VeryLazy', opts = {} },
+    { 'akinsho/bufferline.nvim', config = {} },
+    { 'ethanholz/nvim-lastplace', config = {} },
+    { 'norcalli/nvim-colorizer.lua', opts = {}, config = function ()
+        require('colorizer').setup()
+    end },
+    { 'nvim-treesitter/nvim-treesitter-context', dependencies = { 'nvim-treesitter/nvim-treesitter' }},
+    { 'wakatime/vim-wakatime', event = 'VeryLazy' },
+
+    { 'lukas-reineke/indent-blankline.nvim',
+        main = 'ibl',
+        opts = {},
+        dependencies = { 'olimorris/onedarkpro.nvim' }
+    },
+
+    { 'neovim/nvim-lspconfig', dependencies = {
+        'folke/neodev.nvim',
+        'williamboman/mason-lspconfig.nvim',
+        'williamboman/mason.nvim',
+        { 'j-hui/fidget.nvim', opts = {} },
+    }},
 }
