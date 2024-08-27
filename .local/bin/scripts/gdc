@@ -44,10 +44,10 @@ case "$1" in
 esac
 
 if [ "$#" -lt "1" ]; then
-    die "Missing commit message!"
+    die "Missing date!"
 fi
 
 export GIT_AUTHOR_DATE="${date}"
 export GIT_COMMITTER_DATE="${date}"
 
-git commit -m "$@"
+git commit "$@"

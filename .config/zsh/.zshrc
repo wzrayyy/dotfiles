@@ -75,7 +75,6 @@ alias .......="cd ../../../../../../"
 alias rz="exec zsh"
 alias venv="source src_venv"
 alias ex="source src_example"
-alias cdb="compiledb "
 alias info="pinfo "
 alias bat="batcat "
 alias img="nsxiv "
@@ -92,19 +91,22 @@ t()      { taskell "${1:-${HOME}/.taskell.md}"; }
 vims()   { vim "$(whereis "$1" | rev | cut -d ' ' -f 1 | rev)"; }; compdef _command vims
 bc()     { unbuffer "$@" | bat; }; compdef _command bc
 
+# compdef
+compdef -a '_git; _git-commit' gdc # todo
+compdef '_files -g "*.md"' md
 
 # git aliases
-alias gitignore="cp ${HOME}/.local/share/gitignore-template ./.gitignore"
+gl() { git log "$@" | bat }; compdef '_git; _git-log' gl
 alias gs="git status"
 alias gc="git commit"
 alias gca="git commit --amend --no-edit"
 alias gp="git push"
-alias gl="git log"
 alias ga="git add"
 alias gck="git checkout"
 alias gb="git branch"
 alias gd="git diff"
 alias gr="git restore"
+alias gr="git reset"
 alias gcl="git clone"
 alias gds="gd --staged"
 
@@ -113,12 +115,8 @@ alias dc="docker compose"
 alias docker!="DOCKER_HOST=ssh://docker /usr/bin/docker"
 alias dc!="docker! compose"
 
-# tmux aliases
-tn() {
-	tmux new-session -s "${1-"$(basename "$(pwd)")"}"
-}
-
-
+# tmux stuff
+tn() { tmux new-session -s "${1-"$(basename "$(pwd)")"}" }
 alias ta="tmux a -t"
 
 # disable xon controll chars

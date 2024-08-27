@@ -1,6 +1,7 @@
 #!/bin/bash
 
 : "${1:?Missing filename!}"
+[ ! -f "$1" ] && { echo "Wrong filename!" >&2; exit 1; }
 
 FILENAME="$(mktemp)"
 
@@ -11,16 +12,18 @@ cleanup() {
 trap 'cleanup' INT HUP TRAP
 
 shift_header() {
-    read -r line < "$1"
-
-    if [[ "$line" = "# "* ]]; then
-        echo "---"
-        echo "title: ${line#"# "}"
-        echo "---"
-        tail -n +2 "$1"
-    else
-        cat "$1"
-    fi
+    local counter=1
+    while read -r line; do
+        (( counter+=1 ))
+        if [[ "$line" = "# "* ]]; then
+            echo "---"
+            echo "title: ${line#"# "}"
+            echo "---"
+            tail -n +"$counter" < "$1"
+            return
+        fi
+    done < "$1"
+    cat "$1"
 }
 
 main() {

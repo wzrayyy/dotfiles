@@ -1,3 +1,5 @@
+[core]
+	pager = delta
 [user]
 	email = me@wzray.ru
 	name = Arthur Khachaturov
@@ -5,3 +7,12 @@
 	defaultBranch = main
 [commit]
 	gpgsign = true
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	syntax-theme = OneHalfDark
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
