@@ -1,9 +1,6 @@
-vim.g.polyglot_disabled = {'sensible'}
-
 return {
     'rcarriga/nvim-notify',
     'stefandtw/quickfix-reflector.vim',
-    { 'sheerun/vim-polyglot' },
     { 'akinsho/bufferline.nvim', opts = {}, dependencies = { 'navarasu/onedark.nvim' } },
     { 'ethanholz/nvim-lastplace', opts = {} },
     { 'kylechui/nvim-surround', version = '*', event = 'VeryLazy', opts = {} },

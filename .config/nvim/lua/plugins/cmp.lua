@@ -4,12 +4,15 @@ return {
     dependencies = {
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-buffer',
-        'onsails/lspkind.nvim'
+        'onsails/lspkind.nvim',
+        'L3MON4D3/LuaSnip'
     },
 
     config = function()
         local cmp = require('cmp')
         local lspkind = require('lspkind')
+        local luasnip = require("luasnip")
+
         cmp.setup({
             completion = {
                 completeopt = 'menu,menuone,noinsert'
@@ -25,6 +28,8 @@ return {
                 ['<Tab>'] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
+                    elseif luasnip.locally_jumpable(1) then
+                        luasnip.jump(1)
                     else
                         fallback()
                     end
@@ -32,15 +37,24 @@ return {
                 ['<S-Tab>'] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_prev_item()
+                    elseif luasnip.locally_jumpable(-1) then
+                        luasnip.jump(-1)
                     else
                         fallback()
                     end
                 end, { 'i', 's' }),
             },
 
+            snippet = {
+                expand = function(args)
+                    luasnip.lsp_expand(args.body)
+                end,
+            },
+
             sources = {
                 { name = 'nvim_lsp' },
                 { name = 'buffer' },
+                { name = 'luasnip' },
             },
 
             --- @diagnostic disable-next-line: missing-fields
@@ -49,7 +63,7 @@ return {
                     mode = 'symbol_text',
                     show_labelDetails = true,
                     menu = ({
-                        buffer = "[Buffer]",
+                        buffer = "[BUF]",
                         nvim_lsp = "[LSP]",
                     })
                 })
