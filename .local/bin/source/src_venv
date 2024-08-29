@@ -59,4 +59,4 @@ case "${OPERATION}" in
     r) [ -d "${VENV_FOLDER}" ] && remove             || help >&2;;
 esac
 
-# vim: set ft=sh
+# vim: ft=sh
