@@ -84,6 +84,7 @@ alias d="diff --color -u "
 alias rgf="rg --files | rg "
 alias 7z="7zz" # for whatever reason 7z provides 7zz binary in debian
 alias wt="watch -d -cn 0.1 "
+alias .e="source .env"
 
 # function aliases
 bl()     { brightnessctl set "$1"% &> /dev/null; }
