@@ -1,9 +1,5 @@
 #!/bin/bash
 
-log() {
-    echo "$@" >> /home/wzray/out
-}
-
 exec {OUTPUT_PIPE}<> <(:)
 
 DESC="${1:-"Please enter your authentication passphrase:"}"
@@ -17,7 +13,6 @@ EOF
 
 {
     while read -r out <&$OUTPUT_PIPE; do
-        log "$out"
         if [[ "$out" = "D "* ]]; then
             echo "${out#"D "}"
             break
