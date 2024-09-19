@@ -41,9 +41,9 @@ while [ "$#" -gt 0 ]; do
         '-c'|'--create') OPERATION=c;;
         '-d'|'--deactivate') OPERATION=d; return;;
         '-r'|'--remove') OPERATION=r;;
-        '-f'|'--folder') shift; VENV_FOLDER_NAME="$1";;
+        '-f'|'--folder') shift; VENV_FOLDER_PATH="$1";;
         -*) help; return;;
-        *) shift; VENV_FOLDER_PATH="$1";;
+        *) VENV_FOLDER_NAME="$1";;
     esac
     shift
 done

@@ -1,10 +1,11 @@
 return {
-    settings = {
-        ['lua_ls'] = {
-            Lua = {
-                workspace = { checkThirdParty = false },
-                telemetry = { enable = false },
-            },
-        }
-    }
+    Lua = {
+        workspace = {
+            checkThirdParty = true,
+            library = {
+                vim.env.VIMRUNTIME
+            }
+        },
+        telemetry = { enable = false },
+    },
 }

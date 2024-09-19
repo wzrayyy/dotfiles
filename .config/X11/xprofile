@@ -1,8 +1,18 @@
 systemctl --user import-environment DISPLAY
 
-export TERMINAL=/usr/bin/alacritty
-export TERM=/usr/bin/alacritty
-export _JAVA_AWT_WM_NONREPARENTING=1 
-export AWT_TOOLKIT=MToolkit
+set -a
+
+TERMINAL=/usr/bin/alacritty
+TERM=/usr/bin/alacritty
+_JAVA_AWT_WM_NONREPARENTING=1 
+AWT_TOOLKIT=MToolkit
+
+MOZ_USE_XINPUT2=1
+
+XDG_CURRENT_DESKTOP="gtk"
+XDG_SESSION_DESKTOP="$XDG_CURRENT_DESKTOP"
+WINDOW_MANAGER="dwm"
+
+set +a
 
 # vim: ft=bash

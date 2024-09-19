@@ -35,6 +35,7 @@ main() {
 	"--variable=published_time=$(date -Iseconds -d"$(stat "$1" | grep 'Birth:' | sed 's/.*Birth:\s//')")"
     )
     pandoc "${pandoc_options[@]}" <(shift_header "$1") > "$FILENAME" 2>/dev/null &&
+    echo "$FILENAME" &&
     firefox "$FILENAME" 2>/dev/null & disown
 
     sleep 5

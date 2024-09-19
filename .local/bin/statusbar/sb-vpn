@@ -3,5 +3,5 @@
 IFNAME="$(ip link show | grep 'wg_' | cut -d ' ' -f 2 | sed 's/://' | sed 's/wg_//' | tr '[:lower:]' '[:upper:]' | sed 's/_D/ (dpi)/')"
 
 if [ -n "${IFNAME}" ]; then
-    echo "🛡️ ${IFNAME}"
+    echo "󰦝 ${IFNAME}"
 fi

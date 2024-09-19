@@ -1,0 +1,5 @@
+#!/bin/bash
+
+FILEPATH="${XDG_RUNTIME_DIR}/my.itmo.pipe"
+
+[ -f "${FILEPATH}" ] && cat "${FILEPATH}"

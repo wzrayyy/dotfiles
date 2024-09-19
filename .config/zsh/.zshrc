@@ -1,8 +1,7 @@
-[[ $- != *i* ]] && return
-
-[ "$TERM" = "linux" ] && export TERM=fbterm
+# [[ $- != *i* ]] && return # idk why would it be tho...
 
 . ~/.cargo/env
+. ~/.config/zsh/modes.sh
 
 # ls colors
 eval "$(dircolors -b)"
@@ -40,7 +39,7 @@ bindkey "^[n" backward-word
 bindkey "^[m" forward-word
 
 # completions
-autoload -Uz compinit 
+autoload -Uz compinit
 compinit
 
 zstyle ':completion:*' menu select
@@ -86,6 +85,7 @@ alias 7z="7zz" # for whatever reason 7z provides 7zz binary in debian
 alias wt="watch -d -cn 0.1 "
 alias cal="ncal -b"
 alias .e="source .env"
+alias tp="taskell ${HOME}/.projects.md"
 
 # function aliases
 bl()     { brightnessctl set "$1"% &> /dev/null; }
@@ -126,4 +126,4 @@ alias ta="tmux a -t"
 stty -ixon
 
 # print tasks on startup
-cat ~/.taskell.md
+cat ~/.taskell.md | grep -v '>.*'

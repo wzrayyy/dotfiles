@@ -36,6 +36,6 @@ return {
         vim.keymap.set('n', '<leader>of', require('telescope.builtin').oldfiles)
         vim.keymap.set('n', '<leader>af', require('telescope.builtin').git_files)
         vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files)
-        vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string)
+        vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string)
     end
 }

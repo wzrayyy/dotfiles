@@ -1,0 +1,90 @@
+#!/bin/bash
+
+{ read -r _TELEGRAM__BOT_TOKEN; read -r _TELEGRAM__USER_ID; } < "${HOME}/.secrets/telegram.secret"
+
+declare -A _TELEGRAM__PARSE_MODES=(
+    [md]=MarkdownV2
+    [html]=HTML
+)
+
+declare -A tg__params=()
+tg__code=0
+
+
+tg::send_message() {
+    declare -a curl_params=()
+
+    for name in "${!tg__params[@]}"; do
+        curl_params+=("--data-urlencode" "$name=${tg__params[$name]}")
+    done
+
+    while IFS= read -d '' -n 4096 -r chunk; do
+        [ ${tg__code} -eq 1 ] &&
+            txt=(--data-urlencode "text=<pre>${chunk}</pre>") ||
+            txt=(--data-urlencode "text=${chunk}")
+        curl -X POST "https://api.telegram.org/bot${_TELEGRAM__BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=$_TELEGRAM__USER_ID" \
+            "${curl_params[@]}" \
+            "${txt[@]}"
+    done
+    [ -n "$chunk" ] && {
+        [ ${tg__code} -eq 1 ] &&
+            txt=(--data-urlencode "text=<pre>${chunk}</pre>") ||
+            txt=(--data-urlencode "text=${chunk}")
+        curl -X POST "https://api.telegram.org/bot${_TELEGRAM__BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=$_TELEGRAM__USER_ID" \
+            "${curl_params[@]}" \
+            "${txt[@]}"
+    }
+}
+
+
+(return 0 2>/dev/null) && return
+
+
+help() {
+    echo "ABSTRACT"
+    echo "    Read data from fd0 and send it to Telegram."
+    echo
+    echo "USAGE"
+    echo "    tg [PARAMS]"
+    echo
+    echo "PARAMS"
+    echo "    -c, --code                 Wrap text with <pre> tags"
+    echo "    -h, --help                 Print this message"
+    echo "    -p, --parse-mode           Telegram parse mode (html, md)"
+    echo "    -r, --print-response       Don't silence Telegram response"
+    echo "        --tg<NAME> <VALUE>     Set POST parameter with NAME to VALUE"
+}
+
+
+die() {
+    echo "[ERROR] $1" >&2
+    echo
+    help
+    exit 1
+}
+
+
+main() {
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            '-h'|'--help') help; exit 0 ;;
+            '-p'|'--parse-mode') shift; tg__params[parse_mode]="${_TELEGRAM__PARSE_MODES[$1]}" ;;
+            '-c'|'--code') tg__code=1; tg__params[parse_mode]='HTML' ;;
+            '-r'|'--print-response') print_response=1 ;;
+            '--tg'*) tg__params["${1#--tg}"]="$2"; shift ;;
+        esac
+        shift
+    done
+
+    [ -t 0 ] && die "Can't run on stdin!"
+
+    resp="$(tg::send_message "$@" 2>/dev/null)"
+
+    [ -n "${print_response:+_}" ] && echo "$resp"
+
+    [ "$(jq .ok <<<"$resp")" = "true" ] || jq <<< "$resp" >&2
+}
+
+main "$@"

@@ -1,7 +1,7 @@
 set -a
 
 PATH="$HOME/.local/share/go/bin:$PATH"
-PATH="${$(find -L ~/.local/bin -type d -printf %p:)%%:}:$PATH"
+PATH="${$(find -L ~/.local/bin ! -name '.*' -type d -printf %p:)%%:}:$PATH"
 
 # lc vars
 LANGUAGE="en_US.UTF-8"
@@ -26,11 +26,6 @@ GPG_TTY="$(tty)"
 MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 MANROFFOPT="-c"
 MTR_OPTIONS="-t"
-MOZ_USE_XINPUT2=1
-
-XDG_CURRENT_DESKTOP="gtk"
-XDG_SESSION_DESKTOP="$XDG_CURRENT_DESKTOP"
-WINDOW_MANAGER="dwm"
 
 SUDO_ASKPASS="${HOME}/.local/bin/scripts/dmenu_askpass"
 SSH_ASKPASS="${HOME}/.local/bin/scripts/ssh-askpass"

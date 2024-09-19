@@ -16,7 +16,7 @@ vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.smarttab = true
 vim.o.breakindent = true
-vim.o.softtabstop = -1
+vim.o.softtabstop = 4
 
 -- Save undo history
 vim.o.undofile = true

@@ -1,5 +1,10 @@
 local map = vim.keymap.set
 
+-- Remap leader to <Space>
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
 -- Unbind keys
 map('n', '<C-q>', '<NOP>')
 map({ 'n', 'v' }, 'H', '<NOP>')
@@ -27,6 +32,10 @@ map({ 'n', 'v' }, '<leader>n', '<C-w>10<')
 map({ 'n', 'v' }, '<leader>m', '<C-w>10>')
 map({ 'n', 'v' }, '<leader>N', '<C-w>6-')
 map({ 'n', 'v' }, '<leader>M', '<C-w>6+')
+
+-- quickfix buffer
+map('n', '<M-n>', ':cn<CR>', { silent = true })
+map('n', '<M-p>', ':cp<CR>', { silent = true })
 
 -- Remap <M-BS> to remove last word
 map('i', '<M-BS>', '<C-w>')

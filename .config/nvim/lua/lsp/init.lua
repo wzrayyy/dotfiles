@@ -6,6 +6,8 @@ local servers = {
     rust_analyzer = {},
     bashls = {},
     hls = {},
+    eslint = {},
+    ts_ls = {},
 }
 
 vim.lsp.set_log_level("debug")
@@ -43,7 +45,15 @@ for server_name, config in pairs(servers) do
     lspconfig[server_name].setup({
         capabilities = capabilities,
         on_attach = on_attach,
-        settings = { [server_name] = config },
+        settings = {
+            [server_name] = config ~= {} and {
+                settings = {
+                    [server_name] = {
+                        config
+                    }
+                }
+            } or {}
+        },
     })
 end
 

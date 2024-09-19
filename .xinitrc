@@ -10,7 +10,8 @@ export XDG_CURRENT_DESKTOP="gtk"
 export XDG_SESSION_DESKTOP="$XDG_CURRENT_DESKTOP"
 export WINDOW_MANAGER="dwm"
 
-exec ssh-agent "${HOME}"/.local/src/dwm/dwm
-# exec ssh-agent /usr/bin/dwm
+eval "$(ssh-agent)"
+
+exec "${HOME}"/.local/src/dwm/dwm
 
 # vim: ft=sh
