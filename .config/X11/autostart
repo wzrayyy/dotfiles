@@ -1,7 +1,7 @@
 set -x
 
 # setxkbmap -layout us,ru -option grp:win_space_toggle
-xwallpaper --zoom ${HOME}/.local/share/wallpaper/wallpaper.png
+xwallpaper --zoom "${HOME}"/.local/share/wallpaper/wallpaper.png
 
 launch() {
     cmd="$1"
@@ -13,10 +13,7 @@ launch() {
 xrdb -merge ~/.Xresources
 
 launch xsettingsd &
-# launch picom --config="${HOME}/.config/picom.conf" &
-launch copyq &
 launch dunst &
-launch flameshot & 
 launch dwmblocks &
 
-# vim: ft=bash
+# vim: ft=sh

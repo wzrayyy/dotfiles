@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # supress stderr
-exec 2> /dev/null
 
 change_dpi() {
     sed -i -E --follow-symlinks "s/Xft\.dpi: .*?/Xft\.dpi: $1/g" ~/.Xresources
@@ -27,15 +26,16 @@ if [[ -z "${EXT_MON}" ]]; then
     xrandr --rmmode "${INT_RES}"
     change_dpi 192 48
 else
-    xrandr --rmmode "${INT_RES}"
-    # shellcheck disable=all
-    xrandr --newmode $(echo $INT_MODELINE) # this is a hack to make xrandr recognize the resolution
-    xrandr --addmode eDP-1 "${INT_RES}"
-    xrandr --output eDP-1 --pos 2560x400 --mode "${INT_RES}" --output "${EXT_MON}" --pos 0x0 --mode "2560x1440" --rate 144 --primary
-    change_dpi 96 24
-    xinput --map-to-output "UGTABLET 6 inch PenTablet Mouse" "${EXT_MON}"
-    xinput --map-to-output "UGTABLET 6 inch PenTablet Pen (0)" "${EXT_MON}"
-    xinput --map-to-output "UGTABLET 6 inch PenTablet Eraser (0)" "${EXT_MON}"
+    :
+    # xrandr --rmmode "${INT_RES}"
+    # # shellcheck disable=all
+    # xrandr --newmode $(echo $INT_MODELINE) # this is a hack to make xrandr recognize the resolution
+    # xrandr --addmode eDP-1 "${INT_RES}"
+    # xrandr --output eDP-1 --pos 2560x400 --mode "${INT_RES}" --output "${EXT_MON}" --pos 0x0 --mode "2560x1440" --rate 144 --primary
+    # change_dpi 96 24
+    # xinput --map-to-output "UGTABLET 6 inch PenTablet Mouse" "${EXT_MON}"
+    # xinput --map-to-output "UGTABLET 6 inch PenTablet Pen (0)" "${EXT_MON}"
+    # xinput --map-to-output "UGTABLET 6 inch PenTablet Eraser (0)" "${EXT_MON}"
 fi
 
 "${HOME}/.config/X11/autostart"

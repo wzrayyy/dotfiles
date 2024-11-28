@@ -4,6 +4,11 @@ shopt -s extglob
 
 declare -a batteries
 
+declare -A custom_icons=(
+    ["hid:b0003g0102v0000046Dp00004086"]=" "
+    ["hid:b0005g0000v0000054Cp000005C4"]=" "
+)
+
 status_by_charge() {
     capacity="$1"
 
@@ -19,22 +24,30 @@ status_by_charge() {
 }
 
 for battery_path in /sys/class/power_supply/!(AC*); do
-	status="$(cat "${battery_path}/status")"
-	capacity="$(cat "${battery_path}/capacity")"
-        sep=$([ "$1" == "-s" ] && echo " ")
+    status="$(cat "${battery_path}/status")"
+    capacity="$(cat "${battery_path}/capacity")"
+    sep=$([ "$1" == "-s" ] && echo " ")
+    device_name=$(cat "${battery_path}/device/modalias")
 
-	case "${status}" in
-		"Full") status_symbol=" " ;;
-                "Discharging") status_symbol="$(status_by_charge "${capacity}")" ;;
-		"Charging") status_symbol="󱐥 " ;;
-		"Not charging") status_symbol="󱐤 " ;;
-		"Unknown") status_symbol="󰒲 " ;;
-		*) status_symbol="?? " ;;
-	esac
+    case "${status}" in
+	    "Full") status_symbol=" " ;;
+	    "Discharging") status_symbol="$(status_by_charge "${capacity}")" ;;
+	    "Charging") status_symbol="󱐥 " ;;
+	    "Not charging") status_symbol="󱐤 " ;;
+	    "Unknown") status_symbol="󰒲 " ;;
+	    *) status_symbol="?? " ;;
+    esac
 
-        [ "$capacity" -eq 100 ] && status_symbol=" "
-	[ "$status" = "Discharging" ] && [ "$capacity" -le 20 ] && { status_symbol="❗"; [ -n "$sep" ] && sep="" || sep=" "; }
-	batteries+=("${status_symbol}${sep}${capacity}%")
+    if [ "$capacity" -eq 100 ]; then
+	status_symbol=" "
+    elif [ -n "${custom_icons[$device_name]}" ]; then
+	status_symbol="${custom_icons["$device_name"]}"
+    elif [[ "$status" = "Discharging" && "$capacity" -le 20 ]]; then
+	status_symbol="❗"
+	[ -n "$sep" ] && sep="" || sep=" ";
+    fi
+
+    batteries+=("${status_symbol}${sep}${capacity}%")
 done
 
 echo "${batteries[@]}"

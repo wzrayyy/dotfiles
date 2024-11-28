@@ -1,0 +1,63 @@
+
+[colors.bright]
+black = "#696969"
+blue = "#007FFF"
+cyan = "#00CCCC"
+green = "#03C03C"
+magenta = "#FF1493"
+red = "#FF2400"
+white = "#FFFAFA"
+yellow = "#FDFF00"
+
+[colors.normal]
+black = "#101010"
+blue = "#0087BD"
+cyan = "#20B2AA"
+green = "#009F6B"
+magenta = "#9A4EAE"
+red = "#C40233"
+white = "#C6C6C6"
+yellow = "#FFD700"
+
+[colors.primary]
+background = "#101010"
+foreground = "#C6C6C6"
+
+[cursor.style]
+blinking = "Off"
+shape = "Block"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 11.5
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.normal]
+family = "Mononoki Nerd Font Propo"
+
+[font.offset]
+x = 0
+y = 0
+
+[window]
+dynamic_padding = true
+
+[window.padding]
+x = 2
+y = 2
+
+[keyboard]
+bindings = [
+    {key = "Slash", mods = "Control", chars = "\u001f"},
+    {key = "Space", mods = "Control", chars = "\u0000"},
+    {key = "Back",  mods = "Control", chars = "\u001b\u007f"},
+    {key = "M",     mods = "Control", chars = "\u0100"}
+]
+
+[general]
+live_config_reload = true

@@ -1,6 +1,3 @@
-# [[ $- != *i* ]] && return # idk why would it be tho...
-
-. ~/.cargo/env
 . ~/.config/zsh/modes.sh
 
 # ls colors
@@ -57,10 +54,10 @@ alias l="ls -lh"
 alias la="ls -lah"
 alias ll="ls -lh"
 alias tree="ls --tree"
-alias lt="l -t"
+alias lt="unbuffer lsd --color=always -lt"
 
 # set bat as help pager
-alias -g -- --help='--help 2>&1 | batcat --language=help --style=plain'
+alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
 # useful cd aliases
 alias ..="cd ../"
@@ -76,16 +73,15 @@ alias venv="source src_venv"
 alias ex="source src_example"
 alias ap="source src_add_path"
 alias info="pinfo "
-alias bat="batcat "
+alias bat="bat "
 alias img="nsxiv "
 alias xclip="xclip -selection clipboard"
 alias d="diff --color -u "
 alias rgf="rg --files | rg "
 alias 7z="7zz" # for whatever reason 7z provides 7zz binary in debian
-alias wt="watch -d -cn 0.1 "
+alias wt="watch --color -d -cn 0.1 "
 alias cal="ncal -b"
 alias .e="source .env"
-alias tp="taskell ${HOME}/.projects.md"
 
 # function aliases
 bl()     { brightnessctl set "$1"% &> /dev/null; }
@@ -99,7 +95,7 @@ compdef -a '_git; _git-commit' gdc # todo
 compdef '_files -g "*.md"' md
 
 # git aliases
-gl() { git log "$@" | bat }; compdef '_git; _git-log' gl
+gl() { git log --decorate "$@" | bat }; compdef '_git; _git-log' gl
 alias gs="git status"
 alias gc="git commit"
 alias gca="git commit --amend --no-edit"
@@ -109,9 +105,11 @@ alias gck="git checkout"
 alias gb="git branch"
 alias gd="git diff"
 alias gr="git restore"
-alias gr="git reset"
+alias grs="git restore --staged"
+alias grt="git reset"
 alias gcl="git clone"
 alias gds="gd --staged"
+alias gm="git merge"
 
 # docker aliases
 alias dc="docker compose"

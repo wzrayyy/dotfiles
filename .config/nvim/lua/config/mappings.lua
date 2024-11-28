@@ -20,7 +20,6 @@ map({ 'n', 'v' }, 'k', 'v:count == 0 ? "gk" : "k"', { expr = true, silent = true
 map({ 'n', 'v' }, 'j', 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
 
 -- Duplicate leader feats to gradually move to
-map('n', '<C-q>', function() require('utils.close_buffer').close_buffer() end)
 
 -- Copy and paste from clipboard
 map({ 'n', 'v' }, '<leader>y', '"+y')
@@ -32,6 +31,12 @@ map({ 'n', 'v' }, '<leader>n', '<C-w>10<')
 map({ 'n', 'v' }, '<leader>m', '<C-w>10>')
 map({ 'n', 'v' }, '<leader>N', '<C-w>6-')
 map({ 'n', 'v' }, '<leader>M', '<C-w>6+')
+
+-- goto files
+map('n', '<leader>f', 'gF')
+
+-- Close buffers quickly
+map('n', '<C-q>', ":bd<CR>", { silent = true })
 
 -- quickfix buffer
 map('n', '<M-n>', ':cn<CR>', { silent = true })

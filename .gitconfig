@@ -1,5 +1,5 @@
 [core]
-	pager = delta
+	pager = LESS="-Rz3" delta
 [user]
 	email = me@wzray.ru
 	name = Arthur Khachaturov
@@ -14,5 +14,6 @@
 	syntax-theme = OneHalfDark
 [merge]
 	conflictstyle = diff3
+	tool = nvimdiff
 [diff]
 	colorMoved = default

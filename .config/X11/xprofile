@@ -1,11 +1,10 @@
-systemctl --user import-environment DISPLAY
-
 set -a
 
 TERMINAL=/usr/bin/alacritty
 TERM=/usr/bin/alacritty
-_JAVA_AWT_WM_NONREPARENTING=1 
+_JAVA_AWT_WM_NONREPARENTING=1
 AWT_TOOLKIT=MToolkit
+QT_ENABLE_HIGHDPI_SCALING=1
 
 MOZ_USE_XINPUT2=1
 

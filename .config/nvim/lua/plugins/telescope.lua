@@ -4,6 +4,7 @@ return {
     dependencies = {
         'navarasu/onedark.nvim',
         'nvim-lua/plenary.nvim',
+        'xiyaowong/telescope-emoji.nvim',
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
 
@@ -23,7 +24,8 @@ return {
             },
         }
 
-        pcall(require('telescope').load_extension, 'fzf')
+        require('telescope').load_extension('fzf')
+        require('telescope').load_extension('emoji')
 
         vim.keymap.set('n', '<leader>/', function()
             require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_ivy {
@@ -33,9 +35,10 @@ return {
         end)
 
         vim.keymap.set('n', '<leader>?',  require('telescope.builtin').live_grep)
+        vim.keymap.set('n', '<leader>wf',  require('telescope.builtin').grep_string)
         vim.keymap.set('n', '<leader>of', require('telescope.builtin').oldfiles)
         vim.keymap.set('n', '<leader>af', require('telescope.builtin').git_files)
         vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files)
-        vim.keymap.set('n', '<leader>fw', require('telescope.builtin').grep_string)
+        vim.keymap.set('n', '<leader>.',  require('telescope').extensions.emoji.emoji)
     end
 }

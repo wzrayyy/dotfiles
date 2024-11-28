@@ -1,12 +1,14 @@
 local servers = {
-    clangd = {},
-    pyright = {},
-    lua_ls = require('lsp.lua_ls'),
-    gopls = {},
-    rust_analyzer = {},
     bashls = {},
-    hls = {},
+    clangd = {},
     eslint = {},
+    gopls = {},
+    hls = {},
+    jdtls = {},
+    kotlin_language_server = {},
+    lua_ls = require('lsp.lua_ls'),
+    pyright = {},
+    rust_analyzer = {},
     ts_ls = {},
 }
 

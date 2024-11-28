@@ -1,6 +1,21 @@
 #!/bin/bash
 
 API_ENDPOINT="http://ip-api.com/json/$1"'?fields=7876383'
-printf "%s" "$(curl "${API_ENDPOINT}" 2>/dev/null)" | jq -r '[ "IP: \(.query)", "Country: \(.country)", "City: \(.city)", "ISP: \(.isp)", "ASN: \(.as)" ][] | "\(.)"'
+
+get_stats() {
+    api_response=$(curl "${API_ENDPOINT}" 2>/dev/null)
+    ip=$(jq -r .query <<<"$api_response")
+    ptr="$(dig -x "$ip" | grep -A 1 'ANSWER SECTION' | grep -v 'ANSWER SECTION')"
+    jq -r '[ "IP: \(.query)", "Country: \(.country)", "City: \(.city)", "ISP: \(.isp)", "ASN: \(.as)" ][] | "\(.)"' <<<"$api_response"
+    [ -n "$ptr" ] && echo "PTR: $ptr"
+}
+
+if [ -t 0 ] && [ -t 1 ]; then
+    get_stats
+elif [ -t 1 ]; then
+    notify-send -i /dev/null "Your IP address" "$(get_stats)"
+else
+    curl -s ip.me
+fi
 
 # vim: ft=bash

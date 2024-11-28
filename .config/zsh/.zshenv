@@ -23,9 +23,10 @@ LC_ALL="en_US.UTF-8"
 # default apps
 EDITOR="/usr/bin/nvim"
 GPG_TTY="$(tty)"
-MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+MANPAGER="sh -c 'col -bx | bat -l man -p'"
 MANROFFOPT="-c"
 MTR_OPTIONS="-t"
+GNUPGHOME='~/.local/share/gnupg'
 
 SUDO_ASKPASS="${HOME}/.local/bin/scripts/dmenu_askpass"
 SSH_ASKPASS="${HOME}/.local/bin/scripts/ssh-askpass"

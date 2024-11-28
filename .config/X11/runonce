@@ -1,0 +1,5 @@
+clipmenud &
+flameshot &
+easyeffects --gapplication-service &
+
+# vim: ft=sh

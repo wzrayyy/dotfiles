@@ -67,6 +67,7 @@ die() {
 
 
 main() {
+    msg=""
     while [ $# -gt 0 ]; do
         case "$1" in
             '-h'|'--help') help; exit 0 ;;
@@ -74,16 +75,19 @@ main() {
             '-c'|'--code') tg__code=1; tg__params[parse_mode]='HTML' ;;
             '-r'|'--print-response') print_response=1 ;;
             '--tg'*) tg__params["${1#--tg}"]="$2"; shift ;;
+            *) msg+=" $1";;
         esac
         shift
     done
 
-    [ -t 0 ] && die "Can't run on stdin!"
-
-    resp="$(tg::send_message "$@" 2>/dev/null)"
+    if [ -z "$msg" ]; then
+        [ -t 0 ] && die "Can't run on stdin!"
+        resp="$(tg::send_message "$@" 2>/dev/null)"
+    else
+        resp="$(tg::send_message "$@" 2>/dev/null <<<"$msg")"
+    fi
 
     [ -n "${print_response:+_}" ] && echo "$resp"
-
     [ "$(jq .ok <<<"$resp")" = "true" ] || jq <<< "$resp" >&2
 }
 

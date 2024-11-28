@@ -1,4 +1,5 @@
--- Remap leader key to <Space>
+-- Useful tools for lua
+Utils = require('utils')
 
 -- Load basic configuration
 require("config")
