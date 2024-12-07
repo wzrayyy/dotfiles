@@ -1,3 +1,4 @@
+[ -f "~/.config/.fix-tty" ] || return
 process_id="$$"
 (
     if [ "$(inxi -aG | grep -c 'Monitor')" -eq 1 ]; then

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-dmenu -p "$1" -nf '#3a3a3a' <&-

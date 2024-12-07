@@ -53,8 +53,7 @@ alias ls="lsd --color=auto"
 alias l="ls -lh"
 alias la="ls -lah"
 alias ll="ls -lh"
-alias tree="ls --tree"
-alias lt="unbuffer lsd --color=always -lt"
+alias lt="ls -lt"
 
 # set bat as help pager
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
@@ -84,11 +83,10 @@ alias cal="ncal -b"
 alias .e="source .env"
 
 # function aliases
-bl()     { brightnessctl set "$1"% &> /dev/null; }
+bl()     { brightnessctl set "$1"% > /dev/null; }
 nosw()   { alacritty --class 'noswallow' -e "$@"; }; compdef _command nosw
 t()      { taskell "${1:-${HOME}/.taskell.md}"; }
-vims()   { vim "$(whereis "$1" | rev | cut -d ' ' -f 1 | rev)"; }; compdef _command vims
-bc()     { unbuffer "$@" | bat; }; compdef _command bc
+vims()   { filepath="$(type "$1" | rev | cut -d ' ' -f 1 | rev)"; [ $? -eq 0 ] && vim "${filepath}"; }; compdef _command vims
 
 # compdef
 compdef -a '_git; _git-commit' gdc # todo
