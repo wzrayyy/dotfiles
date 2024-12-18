@@ -14,6 +14,7 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_find_no_dups
 setopt hist_save_no_dups
+setopt inc_append_history
 
 # change word-style
 autoload -U select-word-style
@@ -65,6 +66,14 @@ alias ....="cd ../../../"
 alias .....="cd ../../../../"
 alias ......="cd ../../../../../"
 alias .......="cd ../../../../../../"
+alias ........="cd ../../../../../../../"
+alias .........="cd ../../../../../../../../"
+alias ..........="cd ../../../../../../../../../"
+alias ...........="cd ../../../../../../../../../../"
+alias ............="cd ../../../../../../../../../../../"
+alias .............="cd ../../../../../../../../../../../../"
+alias ..............="cd ../../../../../../../../../../../../../"
+alias ...............="cd ../../../../../../../../../../../../../../"
 
 # aliases
 alias rz="exec zsh"
@@ -81,6 +90,7 @@ alias 7z="7zz" # for whatever reason 7z provides 7zz binary in debian
 alias wt="watch --color -d -cn 0.1 "
 alias cal="ncal -b"
 alias .e="source .env"
+alias vimu="vim -u /dev/null"
 
 # function aliases
 bl()     { brightnessctl set "$1"% > /dev/null; }
@@ -94,20 +104,24 @@ compdef '_files -g "*.md"' md
 
 # git aliases
 gl() { git log --decorate "$@" | bat }; compdef '_git; _git-log' gl
-alias gs="git status"
+alias ga="git add"
+alias gb="git branch"
 alias gc="git commit"
 alias gca="git commit --amend --no-edit"
-alias gp="git push"
-alias ga="git add"
 alias gck="git checkout"
-alias gb="git branch"
+alias gcl="git clone"
 alias gd="git diff"
+alias gds="gd --staged"
+alias gf="git fetch"
+alias gi="git init"
+alias gm="git merge"
+alias gp="git push"
+alias gpu="git pull"
 alias gr="git restore"
+alias grb="git rebase"
 alias grs="git restore --staged"
 alias grt="git reset"
-alias gcl="git clone"
-alias gds="gd --staged"
-alias gm="git merge"
+alias gs="git status"
 
 # docker aliases
 alias dc="docker compose"

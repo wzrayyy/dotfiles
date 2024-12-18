@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 API_ENDPOINT="http://ip-api.com/json/$1"'?fields='
 FIELDS_FULL='7876383'
@@ -8,20 +8,20 @@ get_stats() {
     api_response=$(curl "${API_ENDPOINT}${FIELDS_FULL}" 2>/dev/null)
     ip=$(jq -r .query <<< "$api_response")
     jq -r '[ "IP: \(.query)", "Country: \(.country)", "City: \(.city)", "ISP: \(.isp)", "ASN: \(.as)" ][] | "\(.)"' <<< "$api_response"
-    dig_ans="$(dig -x $ip)"
+    dig_ans="$(dig -x "$ip")"
     ans_count="$(echo "$dig_ans" | grep -o 'ANSWER: [[:digit:]]\+' | cut -d ' ' -f2)"
     [ "$ans_count" -gt 0 ] && {
         printf "PTR: "
-        echo "$(echo "$dig_ans" | grep -A1 ';; ANSWER SECTION' | tail -n1 | awk -F 'PTR' '{ print($2) }' | cut -d $'\t' -f 2)"
+        grep -A1 ';; ANSWER SECTION' <<<"$dig_ans" | tail -n1 | awk -F 'PTR' '{ print($2) }' | cut -d $'\t' -f 2
     }
 }
 
 if [ -t 0 ] && [ -t 1 ]; then
     get_stats
 elif [ -t 1 ]; then
-    notify-send -i /dev/null "" "$(get_stats)"
+    notify-send -i /dev/null "IP Info" "$(get_stats)"
 else
-    curl "${API_ENDPOINT}${FIELDS_SHORT}" 2>/dev/null | jq -r .query
+    curl "${API_ENDPOINT}${FIELDS_SHORT}" 2>/dev/null | jq -r .query | tr -d $'\n'
 fi
 
 # vim: ft=bash

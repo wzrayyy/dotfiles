@@ -7,7 +7,7 @@ HEIGHT=1080
 ASPECT_OFFSET=240
 OUTPUT_NAME='DVI-I-1-1'
 
-command() {
+get_cmd() {
     echo "ffmpeg -ac 2 -ar 44100 -frame_size 2048 -fragment_size 2048 -f pulse -ac 2 -i Mkchromecast.monitor -f x11grab -r 30 -s ${WIDTH}x${HEIGHT} -i :0.0+$1,$2 -vcodec libx264 -preset veryfast -tune zerolatency -maxrate 10000k -bufsize 20000k -pix_fmt yuv420p -g 60 -f mp4 -vf scale=1280:720 -movflags frag_keyframe+empty_moov -ar 44100 -acodec libvorbis pipe:1"
 }
 
@@ -16,23 +16,25 @@ set -x
 close() {
     xrandr --output ${OUTPUT_NAME} --off
     xrandr --delmode ${OUTPUT_NAME} "1920x1080"
-    pid="$(cat "${PIDFILE}")"
+    read -r pid inh_pid < "${PIDFILE}"
     rm "${PIDFILE}"
     pkill -35 dwmblocks
     pkill -P "${pid}"
+    pkill -P "${inh_pid}"
 }
 
 run() {
-    xrandr --setprovideroutputsource 1 0
-    xrandr --addmode ${OUTPUT_NAME} 1920x1080
-    xrandr --output ${OUTPUT_NAME} --mode 1920x1080 --rate 60 --right-of eDP-1
+    # xrandr --setprovideroutputsource 1 0
+    # xrandr --addmode ${OUTPUT_NAME} 1920x1080
+    # xrandr --output ${OUTPUT_NAME} --mode 1920x1080 --rate 60 --right-of eDP-1
 
     echo $$ > "${PIDFILE}"
     pkill -35 dwmblocks
     h_offset=$(( "$(xrandr | grep ${OUTPUT_NAME} | cut -d ' ' -f 3 | cut -d '+' -f 2)" + "${ASPECT_OFFSET}" ))
     v_offset="$(xrandr | grep ${OUTPUT_NAME} | cut -d ' ' -f 3 | cut -d '+' -f 3)"
     systemd-inhibit --what=handle-lid-switch sleep 2592000 &
-    mkchromecast --video --command "$(command ${h_offset} "${v_offset}")"
+    echo "$!" >> "${PIDFILE}"
+    mkchromecast --video --command "$(get_cmd 0 0)"
 }
 
 if [ "$1" = "-k" ]; then

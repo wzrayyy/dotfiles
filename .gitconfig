@@ -1,8 +1,8 @@
 [core]
 	pager = LESS="-Rz3" delta
 [user]
-	email = me@wzray.ru
-	name = Arthur Khachaturov
+	email = me@wzray.com
+	name = Arthur K.
 [init]
 	defaultBranch = main
 [commit]
