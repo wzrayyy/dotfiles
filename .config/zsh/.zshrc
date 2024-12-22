@@ -122,6 +122,7 @@ alias grb="git rebase"
 alias grs="git restore --staged"
 alias grt="git reset"
 alias gs="git status"
+alias gswc="git switch -c"
 
 # docker aliases
 alias dc="docker compose"

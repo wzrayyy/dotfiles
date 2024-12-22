@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# thx https://github.com/mrsobakin
+
+VIDEO_DIR="$HOME/Videos/Screencap"
+FRAMERATE=60
+
+error() {
+    echo "$@"
+    exit 1
+}
+
+if [ "$1" = "--background" ]; then
+    [ -z "$XDG_RUNTIME_DIR" ] && error "XDG_RUNTIME_DIR is not set"
+
+    LOCK_FILE="$XDG_RUNTIME_DIR/screencap.pid"
+    if [ -f "$LOCK_FILE" ]; then
+        echo "Stopping recording..."
+        kill "$(cat "$LOCK_FILE")"
+        rm -f "$LOCK_FILE"
+        exit 0
+    fi
+fi
+
+
+slop -f "%wx%h :0.0+%x,%y" | {
+    read -r size pos
+    [ "$size" = "" ] && error "Interrupted area selection"
+
+    echo "Starting recording..."
+
+    record() {
+        exec ffmpeg                        \
+            -video_size "$size"            \
+            -framerate "$FRAMERATE"        \
+            -thread_queue_size 4096        \
+            -f x11grab -i "$pos" -c:v h264 \
+            -f pulse -ac 2 -i default      \
+            "$VIDEO_DIR/$(date +%s%N).mp4"
+    }
+
+    if [ "$1" != "--background" ]; then
+        record
+    else
+        record &
+        pid=$!
+        echo "$pid" > "$LOCK_FILE"
+    fi
+}
+

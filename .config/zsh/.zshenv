@@ -21,6 +21,7 @@ LC_TELEPHONE="en_US.UTF-8"
 LC_TIME="en_US.UTF-8"
 
 # default configs
+ANDROID_HOME="${HOME}/.local/share/android"
 EDITOR="/usr/bin/nvim"
 GNUPGHOME='~/.local/share/gnupg'
 GOPATH="${HOME}/.local/share/go"

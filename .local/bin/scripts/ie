@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+set -o pipefail
+
 API_ENDPOINT="http://ip-api.com/json/$1"'?fields='
 FIELDS_FULL='7876383'
 FIELDS_SHORT='8192'
@@ -21,7 +23,13 @@ if [ -t 0 ] && [ -t 1 ]; then
 elif [ -t 1 ]; then
     notify-send -i /dev/null "IP Info" "$(get_stats)"
 else
-    curl "${API_ENDPOINT}${FIELDS_SHORT}" 2>/dev/null | jq -r .query | tr -d $'\n'
+    if [ -n "$1" ]; then
+        resp="$(dig +short "$1" | tr -d $'\n')"
+        [ -n "$resp" ] && printf "%s" "$resp" || { echo 'Not found!' >&2; exit 1; }
+    else
+        curl "${API_ENDPOINT}${FIELDS_SHORT}" 2>/dev/null | jq -r .query | tr -d $'\n'
+    fi
+    # curl "${API_ENDPOINT}${FIELDS_SHORT}" 2>/dev/null | jq -r .query | tr -d $'\n'
 fi
 
 # vim: ft=bash
