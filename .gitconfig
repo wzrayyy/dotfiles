@@ -1,5 +1,5 @@
 [core]
-	pager = LESS="-Rz3" delta
+	pager = delta
 [user]
 	email = me@wzray.com
 	name = Arthur K.

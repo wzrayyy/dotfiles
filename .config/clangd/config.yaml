@@ -1,7 +1,7 @@
 If:
   PathMatch: '.*\.(c|h)'
 CompileFlags:
-  Add: [ -std=c20 ]
+  Add: [ -std=c99 ]
 
 ---
 If:

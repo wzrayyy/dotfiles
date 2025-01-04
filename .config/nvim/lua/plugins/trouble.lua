@@ -7,5 +7,6 @@ return {
         { "<leader>ef", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>" },
         { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>" },
         { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>" },
+        { "<leader>el", "<cmd>Trouble qflist toggle<cr>" },
     },
 }

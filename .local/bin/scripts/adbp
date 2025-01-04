@@ -1,0 +1,16 @@
+#!/bin/bash
+
+base_prefix="$(ip route | grep -o '10.16[[:digit:]]' | head -1)"
+
+if [ -n "$1" ]; then
+    phone_ip="$1"
+elif [ -n "$base_prefix" ]; then
+    phone_ip="$base_prefix.8.3"
+else
+    echo "Phone IP unknown!"
+    exit 1
+fi
+
+ssh -p 8022 u0_a343@"$phone_ip" 'su -c setprop service.adb.tcp.port 5555 && su -c stop adbd && su -c start adbd'
+sleep 0.1
+adb connect "$phone_ip"

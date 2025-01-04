@@ -10,6 +10,7 @@ local servers = {
     pyright = {},
     rust_analyzer = {},
     ts_ls = {},
+    ruby_lsp = {},
 }
 
 vim.lsp.set_log_level("debug")

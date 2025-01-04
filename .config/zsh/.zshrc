@@ -54,7 +54,7 @@ alias ls="lsd --color=auto"
 alias l="ls -lh"
 alias la="ls -lah"
 alias ll="ls -lh"
-alias lt="ls -lt"
+alias lt="ls --color=always --icon=always -lt"
 
 # set bat as help pager
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
@@ -91,12 +91,14 @@ alias wt="watch --color -d -cn 0.1 "
 alias cal="ncal -b"
 alias .e="source .env"
 alias vimu="vim -u /dev/null"
+alias reswap="sudo swapoff /swapfile && sudo swapon /swapfile"
 
 # function aliases
 bl()     { brightnessctl set "$1"% > /dev/null; }
 nosw()   { alacritty --class 'noswallow' -e "$@"; }; compdef _command nosw
 t()      { taskell "${1:-${HOME}/.taskell.md}"; }
 vims()   { filepath="$(type "$1" | rev | cut -d ' ' -f 1 | rev)"; [ $? -eq 0 ] && vim "${filepath}"; }; compdef _command vims
+tl()     { tree -C "$@" | bat }; compdef _tree tl
 
 # compdef
 compdef -a '_git; _git-commit' gdc # todo
@@ -104,25 +106,37 @@ compdef '_files -g "*.md"' md
 
 # git aliases
 gl() { git log --decorate "$@" | bat }; compdef '_git; _git-log' gl
+gus() { git branch --set-upstream-to="${1:?}/${2:?}" "${2:?}"}; compdef '_git; _git-push' gus
 alias ga="git add"
 alias gb="git branch"
 alias gc="git commit"
 alias gca="git commit --amend --no-edit"
 alias gck="git checkout"
 alias gcl="git clone"
+alias gcn="git clean"
+alias gcp="git cherry-pick"
 alias gd="git diff"
 alias gds="gd --staged"
 alias gf="git fetch"
 alias gi="git init"
+alias gla="gl --all"
 alias gm="git merge"
 alias gp="git push"
+alias gpo="git push origin"
 alias gpu="git pull"
 alias gr="git restore"
-alias grb="git rebase"
+alias grj="git rebase"
+alias grjc="git rebase --continue"
+alias grjs="git rebase --cancel"
+alias grm="git remote"
 alias grs="git restore --staged"
 alias grt="git reset"
 alias gs="git status"
-alias gswc="git switch -c"
+alias gsc="git switch -c"
+alias gsh="git show"
+alias gsp="git stash pop"
+alias gsj="git stash"
+alias gt="git tag"
 
 # docker aliases
 alias dc="docker compose"

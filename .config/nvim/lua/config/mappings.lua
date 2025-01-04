@@ -23,6 +23,7 @@ map({ 'n', 'v' }, 'j', 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true
 
 -- Copy and paste from clipboard
 map({ 'n', 'v' }, '<leader>y', '"+y')
+map({ 'n', 'v' }, '<leader>Y', '"+Y')
 map({ 'n', 'v' }, '<leader>p', '"+p<ESC>')
 map({ 'n', 'v' }, '<leader>P', '"+P<ESC>')
 
@@ -45,5 +46,6 @@ map('n', '<M-p>', ':cp<CR>', { silent = true })
 -- Remap <M-BS> to remove last word
 map('i', '<M-BS>', '<C-w>')
 
+-- Move lines quickly
 map('n', '<C-M-k>', ':m-2<CR>', { silent = true })
 map('n', '<C-M-j>', ':m+1<CR>', { silent = true })

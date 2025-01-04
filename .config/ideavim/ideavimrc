@@ -1,0 +1,72 @@
+" --- Links to remember
+" Plugins: https://jb.gg/ideavim-plugins
+" IDE actions: https://jb.gg/abva4t
+map <Space> <Nop>
+let mapleader = " "
+set showmode
+set showcmd
+set scrolloff=0
+
+" Line numbers
+set number
+set relativenumber
+
+" Navigation between lines
+noremap j gj
+noremap k gk
+
+" Search
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+" Quickly play macros
+nnoremap Q @q
+
+" Switch buffers
+nnoremap <A-u> :bp<CR>
+nnoremap <A-i> :bn<CR>
+
+" Switch panes
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
+" yank/paste with system clipboard
+nnoremap <leader>y \"+y
+nnoremap <leader>Y \"+Y
+vnoremap <leader>y \"+y
+vnoremap <leader>Y \"+Y
+nnoremap <leader>p \"+p
+nnoremap <leader>P \"+P
+vnoremap <leader>p \"+p
+vnoremap <leader>P \"+P
+
+" General mappings
+map <C-l> :nohls<CR>
+map <C-q> :q<CR>
+map <C-m> :NERDTreeToggle<CR>
+nmap <C-M-k> :m-2<CR>
+nmap <C-M-j> :m+1<CR>
+
+let g:NERDTreeMapQuit="<C-m>"
+
+" IDE actions
+nmap <leader>F <Action>(ReformatCode)
+nmap <leader>i <Action>(ShowHoverInfo)
+nmap <leader>of <Action>(RecentFiles)
+nmap <leader>? <Action>(FindInPath)
+nmap <leader>sf <Action>(GotoFile)
+nmap <leader>af <Action>(GotoFile)
+nmap <leader>rn <Action>(RenameElement)
+nmap <leader>ru <Action>(Run)
+
+
+" Plugins
+Plug 'machakann/vim-highlightedyank'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'preservim/nerdtree'
+set peekaboo
