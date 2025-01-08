@@ -43,10 +43,6 @@ case "$1" in
     ;;
 esac
 
-if [ "$#" -lt "1" ]; then
-    die "Missing date!"
-fi
-
 export GIT_AUTHOR_DATE="${date}"
 export GIT_COMMITTER_DATE="${date}"
 

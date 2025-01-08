@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+import requests
+from sys import stderr
+
+def die(r: str):
+    print(r, file=stderr)
+    exit(1)
+
+def cleanup_backtics(msg: str, depth: int) -> str:
+    if depth <= 0 or msg[0] != '`' or msg[-1] != '`':
+        return msg
+    return cleanup_backtics(msg[1:-1], depth - 1)
+
+def cleanup_string(s: str) -> str:
+    return cleanup_backtics(s.replace('\n','').strip(), 4)
+
+PROMPT="""You are an assistant that helps user to write semantic commit messages. You will be presented with git diff of the code. Write a single short, concise and meaningful message to describe changes that were made. You can only write a single commit message for the entire diff. The single message that you write has to include ALL the changes, that exist in the diff. You can't skip anything.
+
+Semantic commit messages are a structured way of writing commit messages to clearly describe the purpose and scope of changes in a project. They follow a standardized format,  using a prefix that conveys the intent of the change.
+
+The general structure is:
+
+```
+<type>: <short description>
+```
+
+- **Type**: Specifies the kind of change (e.g., `feat` for a new feature, `fix` for a bug fix, `docs` for documentation updates, `ci` for updates to the CI/CD pipeline, `chore` for something less usefull).
+- **Short Description**: A concise summary of the change.
+
+For example:
+- feat: add OAuth2 support
+- fix: resolve dropdown alignment issue
+- docs: update README.md
+- ci: fix `test/windows` pipeline
+
+The `short description` in the commit message should concisely describe the changes that this commit contains. The `short description` should not be a filename. Do not use the same `short description` for every patch in a whole patch series (where a patch series is an ordered sequence of multiple, related patches).
+
+Bear in mind that the `short description` of your commit becomes a globally-unique identifier for that patch. It propagates all the way into the `git changelog`. The `short description` may later be used in developer discussions which refer to the patch. People will want to google for the `short description` to read discussion regarding that patch. It will also be the only thing that people may quickly see when, two or three months later, they are going through perhaps thousands of patches using tools such as `gitk` or `git log --oneline`.
+
+Use the "`" (backtick) symbol when referring to certain parts of code in your commit message."""
+
+with open(f"{os.environ['HOME']}/.secrets/openai.secret") as f:
+    KEY=f.readline().strip()
+
+ps = subprocess.Popen(["git", "diff", "--staged"], stdout = subprocess.PIPE)
+diff = ps.stdout and ps.stdout.read().decode('utf-8').strip()
+if not diff or diff == "":
+    die("Nothing to commit!")
+
+r = requests.post("https://api.openai.com/v1/chat/completions", headers={'Authorization': f'Bearer {KEY}'}, json = {
+    "model": "gpt-4o-mini",
+    "messages": [
+        {
+            "role": "system",
+            "content": [
+                {
+                    "type": "text",
+                    "text": PROMPT,
+                }
+            ]
+        },
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": diff,
+                }
+            ]
+        },
+    ],
+    "response_format": {
+        "type": "text"
+    },
+    "temperature": 1,
+    "max_completion_tokens": 2048,
+    "n": 5,
+    "top_p": 1,
+    "frequency_penalty": 0,
+    "presence_penalty": 0
+})
+
+if r.status_code != 200:
+    die(f"status code: {r.status_code}\n{r.text}")
+
+choices = '# ' + '\n# '.join(map(lambda x: cleanup_string(x['message']['content']), r.json()['choices']))
+
+fd = os.memfd_create("file.txt")
+fd_wrapper = os.fdopen(fd, mode="w+")
+fd_wrapper.write(choices)
+fd_wrapper.flush()
+fd_path = f"/proc/{os.getpid()}/fd/{fd}"
+os.system(f"git commit -v -e -F- < {fd_path}")

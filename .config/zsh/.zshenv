@@ -25,9 +25,18 @@ XDG_DATA_HOME="${HOME}/.local/share"
 XDG_CONFIG_HOME="${HOME}/.config"
 XDG_STATE_HOME="${HOME}/.local/state"
 XDG_CACHE_HOME="${HOME}/.cache"
+XDG_DESKTOP_DIR="$HOME/"
+XDG_DOWNLOAD_DIR="$HOME/Downloads"
+XDG_TEMPLATES_DIR="$HOME/"
+XDG_PUBLICSHARE_DIR="$HOME/"
+XDG_DOCUMENTS_DIR="$HOME/"
+XDG_MUSIC_DIR="$HOME/"
+XDG_PICTURES_DIR="$HOME/"
+XDG_VIDEOS_DIR="$HOME/"
 
 # default configs
 ANDROID_HOME="${HOME}/.local/share/android"
+ANDROID_USER_HOME="${HOME}/.local/share/android-home"
 BAT_THEME="TwoDark"
 EDITOR="/usr/bin/nvim"
 GNUPGHOME='~/.local/share/gnupg'
