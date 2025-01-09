@@ -2,22 +2,25 @@
 
 import os
 import subprocess
+import sys
 import requests
-from sys import stderr
 
 def die(r: str):
-    print(r, file=stderr)
+    print(r, file=sys.stderr)
     exit(1)
 
-def cleanup_backtics(msg: str, depth: int) -> str:
-    if depth <= 0 or msg[0] != '`' or msg[-1] != '`':
+def strip_equal(msg: str, substring: str, n_max: int) -> str:
+    if n_max <= 0 or msg[0] != substring or msg[-1] != substring:
         return msg
-    return cleanup_backtics(msg[1:-1], depth - 1)
+    return strip_equal(msg[1:-1], substring, n_max - 1)
 
 def cleanup_string(s: str) -> str:
-    return cleanup_backtics(s.replace('\n','').strip(), 4)
+    return strip_equal(s.replace('\n','').strip(), '`', 4)
 
-PROMPT="""You are an assistant that helps user to write semantic commit messages. You will be presented with git diff of the code. Write a single short, concise and meaningful message to describe changes that were made. You can only write a single commit message for the entire diff. The single message that you write has to include ALL the changes, that exist in the diff. You can't skip anything.
+
+# globals
+
+PROMPT="""You are an assistant that helps user to write semantic commit messages. You will be presented with git diff of the code. Write a single short, concise and meaningful message to describe changes that were made. You can only write a single commit message for the entire diff. The single message that you write has to include ALL the changes, that exist in the diff. You can't skip anything. Git commit messages are LIMITED TO 72 CHARACTERS. YOUR MESSAGE COULD NOT BE LONGER THAN 72 CHARACTERS.
 
 Semantic commit messages are a structured way of writing commit messages to clearly describe the purpose and scope of changes in a project. They follow a standardized format,  using a prefix that conveys the intent of the change.
 
@@ -46,9 +49,17 @@ with open(f"{os.environ['HOME']}/.secrets/openai.secret") as f:
     KEY=f.readline().strip()
 
 ps = subprocess.Popen(["git", "diff", "--staged"], stdout = subprocess.PIPE)
-diff = ps.stdout and ps.stdout.read().decode('utf-8').strip()
-if not diff or diff == "":
+DIFF = ps.stdout and ps.stdout.read().decode('utf-8').strip()
+if not DIFF or DIFF == "":
     die("Nothing to commit!")
+
+# arguemnt parsing
+
+N: int = 5
+argv = iter(sys.argv[1:])
+for arg in argv:
+    if arg == "-n":
+        N = int(next(argv))
 
 r = requests.post("https://api.openai.com/v1/chat/completions", headers={'Authorization': f'Bearer {KEY}'}, json = {
     "model": "gpt-4o-mini",
@@ -67,7 +78,7 @@ r = requests.post("https://api.openai.com/v1/chat/completions", headers={'Author
             "content": [
                 {
                     "type": "text",
-                    "text": diff,
+                    "text": DIFF,
                 }
             ]
         },
@@ -76,8 +87,8 @@ r = requests.post("https://api.openai.com/v1/chat/completions", headers={'Author
         "type": "text"
     },
     "temperature": 1,
-    "max_completion_tokens": 2048,
-    "n": 5,
+    "max_completion_tokens": 72,
+    "n": N,
     "top_p": 1,
     "frequency_penalty": 0,
     "presence_penalty": 0

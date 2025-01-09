@@ -57,7 +57,7 @@ alias ll="ls -lh"
 alias lt="ls --color=always --icon=always -lt"
 
 # set bat as help pager
-alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+alias -g -- --help='--help 2>&1 | bat --language=help --style=plain --theme Monokai\ Extended'
 
 # useful cd aliases
 alias ..="cd ../"
