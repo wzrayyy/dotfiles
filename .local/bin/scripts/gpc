@@ -3,7 +3,12 @@
 import os
 import subprocess
 import sys
+from typing import Literal
 import requests
+import time
+import threading
+
+state: Literal["loading", "done", "fail"] = "loading"
 
 def die(r: str):
     print(r, file=sys.stderr)
@@ -17,6 +22,16 @@ def strip_equal(msg: str, substring: str, n_max: int) -> str:
 def cleanup_string(s: str) -> str:
     return strip_equal(s.replace('\n','').strip(), '`', 4)
 
+def spin(text: str):
+    interval = 80
+    spinner = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+    i = 0
+    while state == "loading":
+        i = (i + 1) % len(spinner)
+        print(f"\r{spinner[i]} {text}", end=' ')
+        time.sleep(interval / 1000)
+    symbol = "✔️" if state == "done" else "❌"
+    print(f"\r{symbol} {text}")
 
 # globals
 
@@ -61,6 +76,9 @@ for arg in argv:
     if arg == "-n":
         N = int(next(argv))
 
+thread = threading.Thread(target = spin, args = ['Generating...'])
+thread.start()
+
 r = requests.post("https://api.openai.com/v1/chat/completions", headers={'Authorization': f'Bearer {KEY}'}, json = {
     "model": "gpt-4o-mini",
     "messages": [
@@ -95,7 +113,12 @@ r = requests.post("https://api.openai.com/v1/chat/completions", headers={'Author
 })
 
 if r.status_code != 200:
+    state = "fail"
+    thread.join()
     die(f"status code: {r.status_code}\n{r.text}")
+
+state = "done"
+thread.join()
 
 choices = '# ' + '\n# '.join(map(lambda x: cleanup_string(x['message']['content']), r.json()['choices']))
 
