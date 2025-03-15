@@ -1,7 +1,19 @@
 #!/bin/bash
 
-IFNAME="$(ip link show | grep 'wg_' | cut -d ' ' -f 2 | sed 's/://' | sed 's/wg_//' | tr '[:lower:]' '[:upper:]' | sed 's/_D/ (dpi)/')"
 
-if [ -n "${IFNAME}" ]; then
-    echo "󰦝 ${IFNAME}"
+PIPE="/var/run/vpnd.sock"
+send_cmd() {
+    [ -p $PIPE ] && echo "$@" > $PIPE && \
+        cat < $PIPE
+}
+
+IFNAME="$(send_cmd status)"
+
+case "$IFNAME" in
+    "msk") IFNAME="Moscow";;
+    "rix") IFNAME="Riga";;
+esac
+
+if [ -n "$IFNAME" ]; then
+    echo "󰦝 $IFNAME"
 fi

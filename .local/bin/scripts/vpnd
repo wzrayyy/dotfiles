@@ -2,6 +2,7 @@
 # shellcheck disable=SC2034
 
 die() {
+    [ -n "$oc_pid" ] && kill -s TERM $oc_pid
     echo "exitting..."
     rm -f $PIPE
     exit 0
@@ -11,6 +12,7 @@ trap 'die' SIGTERM SIGQUIT SIGINT
 
 PIPE="/var/run/vpnd.sock"
 oc_pid=
+up_name=
 
 [ -p $PIPE ] && exit 1
 [ "$(id -u)" != "0" ] && exit 1
@@ -21,7 +23,7 @@ for config in /etc/openconnect/config_*; do
     CONFIGS+=("${config#config_}")
 done
 
-COMMANDS=("up" "down")
+COMMANDS=("up" "down" "status")
 
 in_arr() {
     declare -n arr="$2"
@@ -37,12 +39,22 @@ down() {
     kill -s TERM $oc_pid
     wait $oc_pid
     oc_pid=
+    up_name=
 }
 
 up() {
     [ -n "$oc_pid" ] && down
     openconnect --config "/etc/openconnect/config_$1" &
     oc_pid="$!"
+    up_name="$1"
+}
+
+status() {
+    # if [ -z "$up_name" ]; then
+    #     echo "DOWN" > $PIPE
+    # else
+    # fi
+     echo "$up_name" > $PIPE
 }
 
 main() {
@@ -50,18 +62,25 @@ main() {
 
     while :; do
         read -r cmd ifname < $PIPE
-
-        if ! in_arr "$ifname" "CONFIGS"; then
-            echo "ERROR: Invalid interface $ifname" > $PIPE
-        elif ! in_arr "$cmd" "COMMANDS"; then
+        if ! in_arr "$cmd" "COMMANDS"; then
             echo "ERROR: Invalid command $cmd" > $PIPE
         else
             case "$cmd" in
-                "up") up "$ifname" > $PIPE ;;
-                "down") down > $PIPE ;;
+                "up")
+                    if ! in_arr "$ifname" "CONFIGS"; then
+                        echo "ERROR: Invalid interface $ifname" > $PIPE
+                    else
+                        up "$ifname"
+                        echo "$ifname" > $PIPE
+                    fi
+                ;;
+                "down") down; echo "down" > $PIPE;;
+                "status") status;;
             esac
+
         fi
     done
 }
 
+echo "Running..."
 main

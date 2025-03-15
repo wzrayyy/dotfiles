@@ -1,7 +1,9 @@
 return {
+    'isobit/vim-caddyfile',
     'rcarriga/nvim-notify',
     'stefandtw/quickfix-reflector.vim',
     'tpope/vim-fugitive',
+    'junegunn/vim-peekaboo',
     'tpope/vim-sleuth',
     'vim-scripts/iptables',
     { 'akinsho/bufferline.nvim', opts = {}, dependencies = { 'navarasu/onedark.nvim' } },
@@ -12,4 +14,5 @@ return {
     { 'norcalli/nvim-colorizer.lua', opts={ '*' }, dependencies = { 'navarasu/onedark.nvim' } },
     -- { 'wakatime/vim-wakatime', event = 'VeryLazy' },
     { 'williamboman/mason.nvim', opts = {} },
+    'Winseven4lyf/vim-bbcode',
 }

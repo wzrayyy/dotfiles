@@ -32,6 +32,7 @@ bindkey "^[[1;3C" forward-word
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;5D" backward-word
+bindkey "^[[3~" delete-char
 
 bindkey "^[n" backward-word
 bindkey "^[m" forward-word
@@ -88,10 +89,13 @@ alias d="diff --color -u "
 alias rgf="rg --files | rg "
 alias 7z="7zz" # for whatever reason 7z provides 7zz binary in debian
 alias wt="watch --color -d -cn 0.1 "
-alias cal="ncal -b"
-alias .e="source .env"
+alias .e="set -a && source .env && set +a"
 alias vimu="vim -u /dev/null"
-alias reswap="sudo swapoff /swapfile && sudo swapon /swapfile"
+alias reswap="sudo bash -c 'echo Working...; swapoff /swapfile && sudo swapon /swapfile'"
+alias make="make -j$(nproc)"
+alias py="python3"
+alias neofetch="fastfetch"
+alias open="xdg-open"
 
 # function aliases
 bl()     { brightnessctl set "$1"% > /dev/null; }
@@ -107,12 +111,15 @@ compdef '_files -g "*.md"' md
 # git aliases
 gl() { git log --decorate "$@" | bat }; compdef '_git; _git-log' gl
 gus() { git branch --set-upstream-to="${1:?}/${2:?}" "${2:?}"}; compdef '_git; _git-push' gus
+gpo() { git push --set-upstream origin ${1:-$(git rev-parse --abbrev-ref HEAD)}}
 alias ga="git add"
 alias gb="git branch"
 alias gc="git commit"
-alias gca="git commit --amend --no-edit"
+alias gca="git commit --allow-empty-message --amend --no-edit"
 alias gck="git checkout"
 alias gcl="git clone"
+alias gcls="git clone --depth=1"
+alias gcm="git commit --allow-empty-message -m ''"
 alias gcn="git clean"
 alias gcp="git cherry-pick"
 alias gd="git diff"
@@ -122,7 +129,6 @@ alias gi="git init"
 alias gla="gl --all"
 alias gm="git merge"
 alias gp="git push"
-alias gpo="git push origin"
 alias gpu="git pull"
 alias gr="git restore"
 alias grj="git rebase"
@@ -134,9 +140,10 @@ alias grt="git reset"
 alias gs="git status"
 alias gsc="git switch -c"
 alias gsh="git show"
-alias gsp="git stash pop"
 alias gsj="git stash"
+alias gsp="git stash pop"
 alias gt="git tag"
+alias gus="git fetch --unshallow"
 
 # docker aliases
 alias dc="docker compose"

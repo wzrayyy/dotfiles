@@ -3,7 +3,7 @@
 url="$(git remote get-url "${1:-origin}")"
 
 if [[ "$url" =~ ^https?:\/\/ ]]; then
-    echo "$url"
+    xdg-open "$url"
 elif [[ "$url" =~ ^[a-zA-Z0-9_-]+@([a-zA-Z0-9_.-]+):(.*) ]]; then
     url="https://${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
     url="${url%.git}"

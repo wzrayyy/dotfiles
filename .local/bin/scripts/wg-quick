@@ -1,7 +1,0 @@
-#!/bin/bash
-
-PIPE="/var/run/vpnd.sock"
-
-[ -p $PIPE ] &&
-echo "$@" > $PIPE &&
-cat < $PIPE

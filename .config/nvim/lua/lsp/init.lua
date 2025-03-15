@@ -1,5 +1,6 @@
 local servers = {
     bashls = {},
+    cmake = {},
     clangd = {},
     eslint = {},
     gopls = {},
@@ -8,9 +9,12 @@ local servers = {
     kotlin_language_server = {},
     lua_ls = require('lsp.lua_ls'),
     pyright = {},
+    ruby_lsp = {},
     rust_analyzer = {},
     ts_ls = {},
-    ruby_lsp = {},
+    yamlls = require('lsp.yamlls'),
+    jsonls = {},
+    svls = {}
 }
 
 vim.lsp.set_log_level("debug")
@@ -43,22 +47,6 @@ end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
-
-for server_name, config in pairs(servers) do
-    lspconfig[server_name].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = {
-            [server_name] = config ~= {} and {
-                settings = {
-                    [server_name] = {
-                        config
-                    }
-                }
-            } or {}
-        },
-    })
-end
 
 for server_name, config in pairs(servers) do
     lspconfig[server_name].setup(vim.tbl_deep_extend('keep', {

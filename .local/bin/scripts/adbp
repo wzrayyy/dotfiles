@@ -11,6 +11,6 @@ else
     exit 1
 fi
 
-ssh -p 8022 u0_a343@"$phone_ip" 'su -c setprop service.adb.tcp.port 5555 && su -c stop adbd && su -c start adbd'
+ssh -p 8022 u0_a230@"$phone_ip" 'su -c setprop service.adb.tcp.port 5555 && su -c stop adbd && su -c start adbd'
 sleep 0.1
 adb connect "$phone_ip"

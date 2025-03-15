@@ -46,8 +46,6 @@ def run_until_successful(fn: Callable[..., T], *args, **kwargs) -> T:
             return fn(*args, **kwargs)
         except Exception:
             pass
-        else:
-            break # no it's not >( # pyright: ignore
 
 
 def send_message(chat_id: int, text: str, token: str):
@@ -180,14 +178,22 @@ class Api:
             self._first_auth()
 
 
-    def get_status_list(self):
+    def _make_request(self, method: Literal["GET", "POST"], endpoint: str):
         self._ensure_authorized()
-        r = run_until_successful(self._session.get, 'https://my.itmo.ru/api/requests/my', timeout=2)
+        r = run_until_successful(self._session.request, method, f'https://my.itmo.ru/api/{endpoint}', timeout=2)
+
+        if r.status_code == 403:
+            self._first_auth() # do full reauth if 403 after self._ensure_authorized()
+            r = run_until_successful(self._session.request, method, f'https://my.itmo.ru/api/{endpoint}', timeout=2)
 
         if r.status_code != 200 or r.json()['error_code'] != 0:
             raise ApiException(r.status_code, r.text)
 
-        return [StatusObject.from_dict(obj) for obj in r.json()['result']]
+        return r.json()
+
+
+    def get_status_list(self):
+        return [StatusObject.from_dict(obj) for obj in self._make_request('GET', 'requests/my')['result']]
 
 
     def to_dict(self) -> Any:
@@ -305,13 +311,13 @@ def main():
             print('\n'.join(map(format_status, message)))
             file.write(' '.join(map(format_status, message)))
 
-    # update_filter = LastUpdateFilter(ignore_now=True)
-    # for message in listen_for_messages(api, filter_func=update_filter):
-    #     formatted_messages = list(map(format_message, message))
-    #     print('\n---\n'.join(formatted_messages))
-    #     for message in formatted_messages:
-    #         send_message(owner_id, message, bot_token)
-    #     update_filter.update()
+    update_filter = LastUpdateFilter(ignore_now=True)
+    for message in listen_for_messages(api, filter_func=update_filter):
+        formatted_messages = list(map(format_message, message))
+        print('\n---\n'.join(formatted_messages))
+        for message in formatted_messages:
+            send_message(owner_id, message, bot_token)
+        update_filter.update()
 
 
 if __name__ == "__main__":

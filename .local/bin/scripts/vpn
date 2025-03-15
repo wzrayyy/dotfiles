@@ -1,17 +1,18 @@
 #!/bin/bash
 
-IFNAME="wg_lva"
+PIPE="/var/run/vpnd.sock"
+send_cmd() {
+    [ -p $PIPE ] && echo "$@" > $PIPE && \
+        cat < $PIPE
+}
+
+IFNAME="rix"
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
-        'd'|'-d'|'--dpi') DPI="_d"
-        ;;
-        'm'|'msk') IFNAME='wg_msk'
-        ;;
-        '-v'|'--verbose') VERBOSE=1
-        ;;
-        *) echo "Wrong argument!"; exit 1
-        ;;
+        'm'|'msk') IFNAME='msk';;
+        '-v'|'--verbose') VERBOSE=1;;
+        *) echo "Wrong argument!"; exit 1;;
     esac
     shift
 done
@@ -22,18 +23,17 @@ else
     set -x
 fi
 
-UP_NAME="$(ip link show | grep 'wg' | cut -d ' ' -f 2 | sed 's/://')"
+UP_NAME="$(send_cmd status)"
 
-IFNAME="${IFNAME}${DPI}"
 if [ -n "${UP_NAME}" ]; then
     if [ "${UP_NAME}" != "${IFNAME}" ]; then
-        wg-quick down "${UP_NAME}"
-        wg-quick up "${IFNAME}"
+        send_cmd down
+        send_cmd up "$IFNAME"
     else
-        wg-quick down "${UP_NAME}"
+        send_cmd down
     fi
 else
-    wg-quick up "${IFNAME}"
+    send_cmd up "$IFNAME"
 fi
 
 pkill -36 dwmblocks
